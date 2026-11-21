@@ -1,0 +1,31 @@
+# Requirements map
+
+Official text: https://www.loops.house/agents-open-for-business (read 21 Nov 2026). Each row gets a proof link when it is done.
+
+## All tracks
+| Requirement | Status | Proof |
+|---|---|---|
+| Celo mainnet only | ⏳ | |
+| Agent registered on ERC-8004 | ⏳ | |
+| Self Agent ID (recommended for all, required for the Self Agent ID track) | ⏳ | |
+| Public GitHub repo at registration | ✅ | this repo |
+| Attribution tag in every counted transaction; x402 PayTo address registered | ⏳ | |
+| Code written from 20 Nov | ✅ | `git log` |
+| Named user, real job done | ⏳ | |
+| Independent users (wallets outside the team, not funded by us) | ⏳ | |
+
+## Self Agent ID: Verified Agent Payments
+Judging: integration 30%, innovation and value 30%, named user and real job 25%, real use 15%.
+| Requirement | Status | Proof |
+|---|---|---|
+| A service where Self Agent ID decides who is served, paid or limited | ⏳ | |
+| Payments through x402 on Celo | ⏳ | |
+| Demo shows an agent with no human behind it being refused or limited (host's tip) | ⏳ | |
+
+## Agent Vault: Online & Onchain Checkouts
+Judging: same as above.
+| Requirement | Status | Proof |
+|---|---|---|
+| The agent signs in on a regular website through Agent Vault (meets the requirement) | ⏳ | |
+| Optional: a real, low-value checkout | ⏳ | |
+| Pays onchain with x402 | ⏳ | |
