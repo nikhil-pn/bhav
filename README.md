@@ -16,10 +16,12 @@ Bhav is a grocery agent for Indian households that does the whole job:
 | Self Agent ID: Verified Agent Payments | Self | Agent ID decides who is served, how much is free, and who pays, with payments over x402 |
 | Agent Vault: Online & Onchain Checkouts | Self | the agent signs in and checks out on a real store without seeing secrets, and pays for data over x402 |
 
+Agent wallet: `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F` · attribution tag: `celo_bc5d483f879e`.
+
 Every agent is registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004), and every transaction carries our [attribution tag](https://github.com/celo-org/attribution-tags).
 
 ## Status
-Day 1 (21 Nov 2026): repo created. The build log, proof table and setup steps will be added as each part works on Celo mainnet.
+Day 1 (21 Nov 2026): repo created, enrolled on Loops House, agent wallet registered with the event. The build log, proof table and setup steps will be added as each part works on Celo mainnet.
 
 ## Rules we follow
 - Celo mainnet only. All code in this repo is written during the hackathon, from 20 Nov 2026.
