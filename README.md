@@ -23,6 +23,12 @@ Every agent is registered on [ERC-8004](https://docs.celo.org/build-on-celo/buil
 ## Status
 Day 1 (21 Nov 2026): repo created, enrolled on Loops House, agent wallet registered with the event. The build log, proof table and setup steps will be added as each part works on Celo mainnet.
 
+## Proof (Celo mainnet unless noted)
+| What | Link |
+|---|---|
+| ERC-8004 identity: agent **#10088**, registered with our attribution tag | [celoscan tx](https://celoscan.io/tx/0xd041f1b77e5a7d1791dc0c3e4e6158cb3a4c44f2c4471d5e2c5d4c3c34d1bab4) |
+| Same registration rehearsed first on Celo Sepolia (agent #1040) | [blockscout tx](https://celo-sepolia.blockscout.com/tx/0xb6b0c8a4a0d8db764e27ab9d30bac0876b6d289674a8f7356c805b50980bdd73) |
+
 ## Rules we follow
 - Celo mainnet only. All code in this repo is written during the hackathon, from 20 Nov 2026.
 - How AI was used: [AI_USAGE.md](AI_USAGE.md). Requirements map: [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md).
