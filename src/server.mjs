@@ -107,7 +107,7 @@ const paid = paymentMiddleware({
 // ── App ───────────────────────────────────────────────────────────────────────
 let pricesMod;
 async function quote(q) {
-  pricesMod ||= await import('./prices/index.mjs');
+  pricesMod ||= await import(process.env.BHAV_PRICES_MODULE || './prices/index.mjs');
   return pricesMod.quote(q);
 }
 

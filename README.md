@@ -28,6 +28,8 @@ Day 1 (21 Nov 2026): repo created, enrolled on Loops House, agent wallet registe
 |---|---|
 | ERC-8004 identity: agent **#10088**, registered with our attribution tag | [celoscan tx](https://celoscan.io/tx/0xd041f1b77e5a7d1791dc0c3e4e6158cb3a4c44f2c4471d5e2c5d4c3c34d1bab4) |
 | **Self Agent ID #211**: a real, unique human (Aadhaar, age 18+, zero-knowledge) stands behind this agent; proof fresh until Nov 2027 | [celoscan tx](https://celoscan.io/tx/0x37226569553840e5e0afbbf2f62af16a2e6530c2b0eb79174beafde4ec51b71b) |
+| Household buyer agent `0x964F…7334` = **Self Agent ID #212** (same human, second agent) | mainnet registry `isVerifiedAgent` = true |
+| Testnet run of the full loop: agent with no Self ID → 403; human-backed agent → 1 free answer, then **$0.01 USDC paid over x402** | [Sepolia settlement](https://celo-sepolia.blockscout.com/tx/0x1ab8b241e1e26650d47c5e7443d227fdad9d7136b04a2dd38aef940b1bc630ad) |
 | Same ERC-8004 registration rehearsed first on Celo Sepolia (agent #1040) | [blockscout tx](https://celo-sepolia.blockscout.com/tx/0xb6b0c8a4a0d8db764e27ab9d30bac0876b6d289674a8f7356c805b50980bdd73) |
 
 ## Rules we follow
