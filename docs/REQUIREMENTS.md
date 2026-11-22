@@ -9,7 +9,7 @@ Official text: https://www.loops.house/agents-open-for-business (read 21 Nov 202
 | Agent registered on ERC-8004 | ✅ | [tx](https://celoscan.io/tx/0xd041f1b77e5a7d1791dc0c3e4e6158cb3a4c44f2c4471d5e2c5d4c3c34d1bab4), agent #10088 |
 | Self Agent ID (recommended for all, required for the Self Agent ID track) | ⏳ | |
 | Public GitHub repo at registration | ✅ | this repo |
-| Attribution tag in every counted transaction; x402 PayTo address registered | ⏳ | |
+| Attribution tag in every counted transaction; x402 PayTo address registered | 🟡 | tag verified by Loops on the ERC-8004 tx; PayTo address pending |
 | Code written from 20 Nov | ✅ | `git log` |
 | Named user, real job done | ⏳ | |
 | Independent users (wallets outside the team, not funded by us) | ⏳ | |
