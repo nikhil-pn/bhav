@@ -1,7 +1,10 @@
-node_modules/
+.cache/
+.data/
+dist/
+.DS_Store
 .env
 .env.*
 *.key
+node_modules/
+screenshots-dev/
 .vercel/
-dist/
-.DS_Store
