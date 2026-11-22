@@ -3,6 +3,7 @@
 // existing key (agent #10088's wallet) instead of a freshly generated one. The key never
 // leaves this machine: the QR only carries the agent address and a signature.
 //
+// Any agent key: BHAV_ENV_FILE=~/.config/pi/bhav-buyer.env registers the household buyer agent.
 // Usage:
 //   BHAV_NETWORK=mainnet node scripts/self-register.mjs link     # prints the URL to open/scan
 //   BHAV_NETWORK=mainnet node scripts/self-register.mjs status   # checks the registry
@@ -51,7 +52,7 @@ if (cmd === 'status') {
   // Wallet-free: the "human identifier" is the agent address itself.
   const { readFileSync } = await import('node:fs');
   const { homedir } = await import('node:os');
-  const key = readFileSync(`${homedir()}/.config/pi/bhav.env`, 'utf8').match(/^BHAV_AGENT_PRIVATE_KEY=(.*)$/m)[1];
+  const key = readFileSync(process.env.BHAV_ENV_FILE || `${homedir()}/.config/pi/bhav.env`, 'utf8').match(/^(?:BHAV_AGENT|BUYER)_PRIVATE_KEY=(.*)$/m)[1];
   const signed = await signRegistrationChallenge(key, {
     humanIdentifier: account.address, chainId, registryAddress: self.registryAddress, nonce,
   });

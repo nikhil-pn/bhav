@@ -10,7 +10,7 @@ import { withAttribution } from '@celo/attribution-tags';
 export const TAG = 'celo_bc5d483f879e';
 
 // Secrets live outside the repo: ~/.config/pi/bhav.env (chmod 600).
-function loadEnv(path = `${homedir()}/.config/pi/bhav.env`) {
+function loadEnv(path = process.env.BHAV_ENV_FILE || `${homedir()}/.config/pi/bhav.env`) {
   const env = {};
   for (const line of readFileSync(path, 'utf8').split('\n')) {
     const m = line.match(/^([A-Z0-9_]+)=(.*)$/);
@@ -38,7 +38,7 @@ export function clients(network = process.env.BHAV_NETWORK || 'testnet') {
   const net = NETWORKS[network];
   if (!net) throw new Error(`unknown network ${network}`);
   const env = loadEnv();
-  const account = privateKeyToAccount(env.BHAV_AGENT_PRIVATE_KEY);
+  const account = privateKeyToAccount(env.BHAV_AGENT_PRIVATE_KEY || env.BUYER_PRIVATE_KEY);
   const transport = http(net.rpc);
   const publicClient = createPublicClient({ chain: net.chain, transport });
   const walletClient = createWalletClient({ account, chain: net.chain, transport })
