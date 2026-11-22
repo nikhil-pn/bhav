@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* Design tokens, sampled from the hero photo: asphalt floor, lime type, basket green, olive juice, mustard shoes. */
+@theme {
+  --color-bg: #1d2421;
+  --color-raised: #252d2a;
+  --color-card: #232b28;
+  --color-line: #36403c;
+  --color-fg: #f2f0e8;
+  --color-muted: #a3aca7;
+  --color-lime: #7ed854;
+  --color-lime-deep: #5fb83a;
+  --color-basket: #0f3b2e;
+  --color-olive: #9a9a4a;
+  --color-mustard: #e3a63b;
+  --color-paper: #f4f1e7;
+  --color-ink: #141816;
+  --font-sans: var(--font-sans-body), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-serif-display), ui-serif, Georgia, serif;
+  --font-mono: var(--font-mono-code), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  overflow-x: clip;
+}
+
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+}
+
+/* The first word of every headline: italic serif. */
+.serif-i {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.display {
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  font-weight: 500;
+}
+
+/* Paper receipt with a torn bottom edge. */
+.receipt {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  --tear: 10px;
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--tear)) 100%;
+  padding-bottom: calc(var(--tear) + 1.25rem);
+}
+
+.tap {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 50;
+}
+.skip:focus {
+  top: 1rem;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .chev {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
