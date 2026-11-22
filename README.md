@@ -4,11 +4,11 @@
 
 **Deadline: Mon 7 Dec 2026, 09:00 GMT (14:30 IST).** Celo hackathon *Agents Open for Business* ([loops.house](https://www.loops.house/agents-open-for-business)).
 
-Bhav is a grocery agent for Indian households that does the whole job:
+Bhav is a grocery agent for Indian households that will do the whole job. **Work in progress:** the identity parts are live on mainnet (see Proof); the service below is being built, and each item gets a proof link when it works.
 
-1. **It knows the price.** Bhav sells live grocery prices from Zepto, Blinkit and Instamart (Kochi) to other agents, per request, over [x402](https://x402.celo.org) on Celo.
-2. **It serves people, not bot farms.** Every caller must carry a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each human gets a fair free quota; an agent with no human behind it is limited or refused.
-3. **It fills the cart.** The household's agent picks the cheapest offer, signs in to the store through [Agent Vault](https://agentvault.io) (it never sees the password or card) and fills the cart. The person approves the payment on their phone.
+1. **It knows the price.** Bhav will sell live grocery prices from Zepto, Blinkit and Instamart (Kochi) to other agents, per request, over [x402](https://x402.celo.org) on Celo.
+2. **One fair quota per human.** Every caller must carry a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each human gets a fair free quota; an agent with no human behind it is limited or refused.
+3. **It fills the cart.** The household's agent will pick the cheapest offer, signs in to the store through [Agent Vault](https://agentvault.io) (it never sees the password or card) and fills the cart. The person approves the payment on their phone.
 
 ## Tracks
 | Track | Sponsor | What we show |
@@ -18,7 +18,7 @@ Bhav is a grocery agent for Indian households that does the whole job:
 
 Agent wallet: `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F` · attribution tag: `celo_bc5d483f879e`.
 
-Every agent is registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004), and every transaction carries our [attribution tag](https://github.com/celo-org/attribution-tags).
+Every agent is registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004), and every transaction Bhav sends carries our [attribution tag](https://github.com/celo-org/attribution-tags).
 
 ## Status
 Day 1 (21 Nov 2026): repo created, enrolled on Loops House, agent wallet registered with the event. The build log, proof table and setup steps will be added as each part works on Celo mainnet.
