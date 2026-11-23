@@ -114,6 +114,23 @@ async function quote(q) {
 const app = express();
 app.get('/health', (_req, res) => res.json({ ok: true, network: NET, payTo: PAY_TO, freePerDay: FREE_PER_DAY, price: `$${Number(PRICE_ATOMIC) / 1e6} USDC` }));
 
+// Anyone (and any browser) may read stats, try the demo, or watch a refusal happen.
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  res.setHeader('Access-Control-Expose-Headers', 'payment-required, payment-response');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
+const short = (t, n = 220) => (t && t.length > n ? t.slice(0, n - 1) + '…' : t);
+function settlementOf(res) {
+  const h = res.getHeader('payment-response');
+  if (!h) return undefined;
+  try { const j = JSON.parse(Buffer.from(String(h), 'base64').toString()); return { tx: j.transaction, payer: j.payer, network: j.network, ok: j.success }; }
+  catch { return undefined; }
+}
+
 app.get('/v1/quote', selfGate, (req, res, next) => {
   const q = String(req.query.q || '').trim();
   if (!q) return res.status(400).json({ error: 'missing_q', example: '/v1/quote?q=chicken%20curry%20cut' });
@@ -124,8 +141,10 @@ app.get('/v1/quote', selfGate, (req, res, next) => {
   try {
     const answer = await quote(q);
     if (req.bhavFree) spendFree(req.agent.human);
-    const settle = res.getHeader('payment-response');
-    log({ kind: req.bhavFree ? 'free' : 'paid', q, agent: req.agent.address, agentId: req.agent.agentId, human: req.agent.human.slice(0, 12), settle: settle ? String(settle).slice(0, 400) : undefined });
+    const base = { q, answer: short(answer.answer), agent: req.agent.address, agentId: req.agent.agentId, human: req.agent.human.slice(0, 12) };
+    if (req.bhavFree) log({ kind: 'free', ...base });
+    // x402 settles after the handler; read the receipt once the response is out.
+    else res.on('finish', () => log({ kind: 'paid', ...base, usdc: Number(PRICE_ATOMIC) / 1e6, settlement: settlementOf(res) }));
     res.json({
       ...answer,
       billing: req.bhavFree
@@ -136,6 +155,52 @@ app.get('/v1/quote', selfGate, (req, res, next) => {
   } catch (e) {
     res.status(502).json({ error: 'price_lookup_failed', message: String(e.message || e) });
   }
+});
+
+// ── Website demo: lets a person try the product without an agent. Free, slow lane,
+// globally rate-limited, never billed, clearly labelled. Agents must use /v1/quote.
+const DEMO_GAP_MS = Number(process.env.BHAV_DEMO_GAP_MS || 12000);
+const DEMO_PER_DAY = Number(process.env.BHAV_DEMO_PER_DAY || 120);
+let demoLast = 0; const demoDay = { day: '', n: 0 };
+app.get('/v1/demo', async (req, res) => {
+  const q = String(req.query.q || '').trim().slice(0, 60);
+  if (!q) return res.status(400).json({ error: 'missing_q' });
+  if (demoDay.day !== today()) Object.assign(demoDay, { day: today(), n: 0 });
+  const wait = demoLast + DEMO_GAP_MS - Date.now();
+  if (wait > 0 || demoDay.n >= DEMO_PER_DAY) {
+    return res.status(429).json({ error: 'demo_busy', retryAfterMs: Math.max(wait, 0), message: 'The website demo is rate-limited. Agents get the full service at /v1/quote.' });
+  }
+  demoLast = Date.now(); demoDay.n++;
+  try {
+    const a = await quote(q);
+    log({ kind: 'demo', q, answer: short(a.answer) });
+    res.json({ demo: true, note: 'Website demo: free and rate-limited. Agents use /v1/quote with a Self Agent ID; after 3 free answers per human per day they pay $0.01 USDC over x402.', ...a, offers: (a.offers || []).slice(0, 6) });
+  } catch (e) {
+    res.status(502).json({ error: 'price_lookup_failed', message: String(e.message || e) });
+  }
+});
+
+// ── Live stats for the website and for judges ────────────────────────────────
+app.get('/v1/stats', (_req, res) => {
+  const file = join(DATA, 'events.jsonl');
+  const ev = existsSync(file) ? readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter((e) => e && e.net === NET) : [];
+  const count = (k) => ev.filter((e) => e.kind === k).length;
+  const paidEv = ev.filter((e) => e.kind === 'paid');
+  const served = ev.filter((e) => e.kind === 'free' || e.kind === 'paid');
+  res.json({
+    network: X402.caip, explorer: X402.explorer, payTo: PAY_TO, price: `$${Number(PRICE_ATOMIC) / 1e6} USDC`, freePerHumanPerDay: FREE_PER_DAY,
+    since: ev[0]?.ts,
+    totals: {
+      agentAnswers: served.length, free: count('free'), paid: paidEv.length, refused: count('refused'), demo: count('demo'),
+      humans: new Set(served.map((e) => e.human)).size, agents: new Set(served.map((e) => e.agent)).size,
+      usdcEarned: +(paidEv.reduce((s, e) => s + (e.usdc ?? Number(PRICE_ATOMIC) / 1e6), 0)).toFixed(6),
+    },
+    settlements: paidEv.filter((e) => e.settlement?.tx).slice(-10).reverse().map((e) => ({ ts: e.ts, tx: e.settlement.tx, payer: e.settlement.payer, q: e.q })),
+    recent: ev.filter((e) => e.kind !== 'demo').slice(-15).reverse().map((e) => ({
+      ts: e.ts, kind: e.kind, q: e.q, answer: e.answer, agentId: e.agentId, agent: e.agent && `${e.agent.slice(0, 6)}…${e.agent.slice(-4)}`,
+      reason: e.reason, tx: e.settlement?.tx,
+    })),
+  });
 });
 
 const port = Number(process.env.PORT || 3420);
