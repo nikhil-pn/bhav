@@ -32,13 +32,17 @@ export function answerLine(query, by, best, deal) {
   const unitPrice = by === 'price' ? rupees(best.price) : `${rupees(best[by])}${basisLabel(by, best, query)}`;
   const head = `Cheapest ${query}: ${unitPrice} on ${STORE_NAME[best.platform]} (${best.name}, ${packText(best)} for ${rupees(best.price)})`;
   const usual = deal.typical != null ? rupees(deal.typical) : null;
+  // When the live product was matched to history by name + pack size (not by the store's own id),
+  // say so: it is "a similar pack", and we never claim a record low from a fuzzy match.
+  const similar = deal.matchedBy === 'name';
+  const its = similar ? `the usual ${usual} for a similar pack` : `its usual ${usual}`;
   switch (deal.verdict) {
     case 'deal':
-      return `${head}, ${Math.round(Math.abs(deal.pctVsTypical))}% below its usual ${usual}${deal.newLow ? ', its lowest price on record' : ''} — a real deal.`;
+      return `${head}, ${Math.round(Math.abs(deal.pctVsTypical))}% below ${its}${deal.newLow && !similar ? ', its lowest price on record' : ''} — a real deal.`;
     case 'pricier':
-      return `${head}, ${Math.round(deal.pctVsTypical)}% above its usual ${usual} — cheapest today, but not a great day to buy.`;
+      return `${head}, ${Math.round(deal.pctVsTypical)}% above ${its} — cheapest today, but not a great day to buy.`;
     case 'normal':
-      return `${head}, about its usual price (${usual}).`;
+      return `${head}, about ${similar ? 'the usual price for a similar pack' : 'its usual price'} (${usual}).`;
     default:
       return `${head}. No price history for this item yet, so we can't say if it's a deal.`;
   }
