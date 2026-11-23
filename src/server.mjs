@@ -41,7 +41,7 @@ const verifier = SelfAgentVerifier.create().network('mainnet').sybilLimit(10).bu
 async function selfGate(req, res, next) {
   const h = req.headers;
   if (!h['x-self-agent-signature'] || !h['x-self-agent-timestamp']) {
-    log({ kind: 'refused', reason: 'no_self_agent_id', path: req.path });
+    log({ kind: 'refused', reason: 'no_self_agent_id', path: req.path, via: h.origin ? 'browser' : 'api' });
     return res.status(403).json({
       error: 'human_backed_agents_only',
       message: 'Bhav only serves AI agents that have a real, unique human behind them. Register your agent with Self Agent ID (zero-knowledge, no personal data shared), then sign your requests.',
@@ -59,7 +59,7 @@ async function selfGate(req, res, next) {
     return res.status(503).json({ error: 'self_registry_unreachable', message: String(e.message || e) });
   }
   if (!r.valid) {
-    log({ kind: 'refused', reason: r.error, agent: r.agentAddress, path: req.path });
+    log({ kind: 'refused', reason: r.error, agent: r.agentAddress, path: req.path, via: h.origin ? 'browser' : 'api' });
     const status = r.retryAfterMs ? 429 : 403;
     return res.status(status).json({ error: 'not_a_verified_human_backed_agent', reason: r.error, retryAfterMs: r.retryAfterMs });
   }
@@ -191,12 +191,13 @@ app.get('/v1/stats', (_req, res) => {
     network: X402.caip, explorer: X402.explorer, payTo: PAY_TO, price: `$${Number(PRICE_ATOMIC) / 1e6} USDC`, freePerHumanPerDay: FREE_PER_DAY,
     since: ev[0]?.ts,
     totals: {
-      agentAnswers: served.length, free: count('free'), paid: paidEv.length, refused: count('refused'), demo: count('demo'),
+      agentAnswers: served.length, free: count('free'), paid: paidEv.length, refused: ev.filter((e) => e.kind === 'refused' && e.via !== 'browser').length,
+      refusedFromWebsiteButton: ev.filter((e) => e.kind === 'refused' && e.via === 'browser').length, demo: count('demo'),
       humans: new Set(served.map((e) => e.human)).size, agents: new Set(served.map((e) => e.agent)).size,
       usdcEarned: +(paidEv.reduce((s, e) => s + (e.usdc ?? Number(PRICE_ATOMIC) / 1e6), 0)).toFixed(6),
     },
     settlements: paidEv.filter((e) => e.settlement?.tx).slice(-10).reverse().map((e) => ({ ts: e.ts, tx: e.settlement.tx, payer: e.settlement.payer, q: e.q })),
-    recent: ev.filter((e) => e.kind !== 'demo').slice(-15).reverse().map((e) => ({
+    recent: ev.filter((e) => e.kind !== 'demo' && e.via !== 'browser').slice(-15).reverse().map((e) => ({
       ts: e.ts, kind: e.kind, q: e.q, answer: e.answer, agentId: e.agentId, agent: e.agent && `${e.agent.slice(0, 6)}…${e.agent.slice(-4)}`,
       reason: e.reason, tx: e.settlement?.tx,
     })),

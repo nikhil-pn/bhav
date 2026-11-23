@@ -5,7 +5,7 @@
 //
 // Usage: node src/buyer.mjs "chicken curry cut" [--url http://127.0.0.1:3420] [--no-self]
 //   --no-self : send the request WITHOUT a Self Agent ID (to show Bhav refusing it)
-// Env: BHAV_BUYER_ENV (default ~/.config/pi/bhav-buyer.env), X402_NETWORK=testnet|mainnet
+// Env: BHAV_BUYER_ENV (default ~/.config/pi/bhav-buyer.env), X402_NETWORK=mainnet (default) | testnet
 import { readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { SelfAgent } from '@selfxyz/agent-sdk';
@@ -18,11 +18,11 @@ const args = process.argv.slice(2);
 const flag = (n) => args.includes(n);
 const opt = (n, d) => (args.includes(n) ? args[args.indexOf(n) + 1] : d);
 const query = args.find((a, i) => !a.startsWith('--') && !(i > 0 && args[i - 1] === '--url')) || 'chicken curry cut';
-const base = opt('--url', process.env.BHAV_URL || 'http://127.0.0.1:3420');
+const base = opt('--url', process.env.BHAV_URL || 'https://devbox.tail84790b.ts.net');
 
 const envFile = process.env.BHAV_BUYER_ENV || `${homedir()}/.config/pi/bhav-buyer.env`;
 const key = readFileSync(envFile, 'utf8').match(/^BUYER_PRIVATE_KEY=(.*)$/m)[1];
-const NET = process.env.X402_NETWORK === 'mainnet' ? 'mainnet' : 'testnet';
+const NET = process.env.X402_NETWORK === 'testnet' ? 'testnet' : 'mainnet'; // Bhav runs on mainnet
 const CAIP = NET === 'mainnet' ? 'eip155:42220' : 'eip155:11142220';
 const USDC = getAddress(NET === 'mainnet' ? '0xcebA9300f2b948710d2653dD7B07f33A8B32118C' : '0x01C5C0122039549AD1493B8220cABEdD739BC44E');
 const RPC = NET === 'mainnet' ? 'https://forno.celo.org' : 'https://forno.celo-sepolia.celo-testnet.org';
