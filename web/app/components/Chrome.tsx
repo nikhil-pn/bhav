@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AGENT_WALLET, CELO, REPO_URL, addrUrl, short } from "@/lib/bhav";
+import { AGENT_WALLET, CELO, REPO_URL, TEAM, TRACKING_SINCE, TRACKS, addrUrl, short } from "@/lib/bhav";
 import CopyButton from "./CopyButton";
 
 export const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
@@ -73,12 +73,13 @@ export function Header({ home = true }: { home?: boolean }) {
         </Link>
         <nav aria-label="Main" className="flex items-center gap-1 text-sm">
           {[
+            [`${p}#try`, "Try it"],
+            [`${p}#gate`, "The gate"],
+            [`${p}#live`, "Live"],
+            [`${p}#use`, "For agents"],
             ["/how-it-works", "How it works"],
-            [`${p}#proof`, "Proof"],
-            [`${p}#stack`, "Stack"],
-            [`${p}#team`, "Team"],
           ].map(([h, l]) => (
-            <a key={h} href={h} className="hidden rounded-full px-3 py-1.5 text-fg/80 hover:text-fg sm:block">
+            <a key={h} href={h} className="hidden rounded-full px-3 py-1.5 text-fg/80 hover:text-fg md:block">
               {l}
             </a>
           ))}
@@ -101,20 +102,29 @@ export function Footer() {
   ];
   return (
     <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-14 pb-[max(3.5rem,env(safe-area-inset-bottom))] sm:px-5 md:flex-row md:items-end md:justify-between">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 pb-[max(3.5rem,env(safe-area-inset-bottom))] sm:px-5 md:grid-cols-[1.2fr_1fr] md:items-end">
         <div>
           <p className="display text-6xl text-lime">
             <span className="serif-i">know</span> the bhav.
             <br />
             pay the bhav.
           </p>
-          <p className="mt-6 max-w-sm text-sm text-muted">
-            Work in progress for Celo&apos;s Agents Open for Business hackathon. Site design adapted from our earlier Iva
-            site (ETHGlobal Mumbai, Nov 2026).
+          <p className="mt-6 max-w-md text-sm text-muted">
+            Prices: Kochi only. Price history collected by our own tracker since {TRACKING_SINCE}. Built for Celo&apos;s
+            Agents Open for Business hackathon, tracks: {TRACKS.map((t) => t.name.split(":")[0]).join(" and ")}. Site
+            design adapted from our Iva site.
           </p>
         </div>
         <div className="md:text-right">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm md:justify-end">
+          <p className="text-sm">
+            Built by{" "}
+            {TEAM.map((m) => (
+              <a key={m.name} href={m.github} {...ext} className="font-semibold text-lime underline-offset-4 hover:underline">
+                {m.name}
+              </a>
+            ))}
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm md:justify-end">
             {links.map(([l, h]) => (
               <li key={l}>
                 <a

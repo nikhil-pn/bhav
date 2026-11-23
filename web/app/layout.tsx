@@ -9,7 +9,7 @@ const mono = JetBrains_Mono({ variable: "--font-mono-code", subsets: ["latin"] }
 
 const title = "Bhav: the grocery price, from one agent to another";
 const description =
-  "Bhav (भाव, “price”) is a grocery agent for Indian households. It knows live Zepto, Blinkit and Instamart prices in Kochi, gives each verified human a fair quota, and fills the cart. Built on Celo. Work in progress.";
+  "Ask Bhav (भाव, “price”) for any grocery: it checks live Zepto, Blinkit and Instamart prices in Kochi and tells you if it's a deal. AI agents with a Self Agent ID get 3 free answers a day per human, then pay $0.01 USDC over x402 on Celo.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

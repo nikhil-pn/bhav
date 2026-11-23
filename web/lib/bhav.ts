@@ -1,6 +1,15 @@
 // Every public fact the site shows, in one place. Nothing secret lives here.
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bhav.vercel.app";
 export const REPO_URL = "https://github.com/nikhil-pn/bhav";
+export const AGENTS_MD_URL = `${REPO_URL}/blob/main/AGENTS.md`;
+export const SELF_DOCS_URL = "https://docs.self.xyz/docs/agent-id/overview";
+
+/** Bhav's public price API. CORS is open for GET, so the browser calls it directly. */
+export const API_BASE = (process.env.NEXT_PUBLIC_BHAV_API || "https://devbox.tail84790b.ts.net").replace(/\/+$/, "");
+/** The public URL we tell agent builders to use (always the public one, never a local override). */
+export const PUBLIC_API = "https://devbox.tail84790b.ts.net";
+export const PRICE_USDC = "$0.01";
+export const FREE_PER_DAY = 3;
 
 export const CELO = {
   id: 42220,
@@ -23,6 +32,13 @@ export const SELF = {
   agentId: 211,
   tx: "0x37226569553840e5e0afbbf2f62af16a2e6530c2b0eb79174beafde4ec51b71b",
 };
+
+/** The household buyer agent we run ourselves: a second Self Agent ID, the first x402 payer. */
+export const BUYER = {
+  address: "0x964F176C16f484C4D035b3958a20F5F648897334" as const,
+  selfAgentId: 212,
+};
+export const FIRST_X402_TX = "0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090";
 
 export const HACKATHON = {
   name: "Agents Open for Business",

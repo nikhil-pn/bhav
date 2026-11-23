@@ -25,10 +25,12 @@ export default function CopyButton({
   text,
   label = "Copy",
   className = "",
+  "aria-label": ariaLabel,
 }: {
   text: string;
   label?: string;
   className?: string;
+  "aria-label"?: string;
 }) {
   const [state, setState] = useState<"idle" | "ok" | "err">("idle");
   return (
@@ -40,6 +42,7 @@ export default function CopyButton({
         setTimeout(() => setState("idle"), 1600);
       }}
       className={`tap shrink-0 rounded-lg border border-line bg-raised px-3 py-1.5 text-xs font-semibold text-fg transition-colors active:bg-line ${className}`}
+      aria-label={state === "idle" ? ariaLabel : undefined}
       aria-live="polite"
     >
       {state === "ok" ? "Copied ✓" : state === "err" ? "Copy failed" : label}

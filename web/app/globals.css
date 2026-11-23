@@ -105,3 +105,17 @@ details[open] .chev {
     scroll-behavior: auto;
   }
 }
+
+/* Loading bar for the live price check. */
+@keyframes scan {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(330%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[scan_1\.4s_ease-in-out_infinite\] {
+    animation: none;
+    width: 100%;
+    opacity: 0.4;
+  }
+}
