@@ -1,8 +1,8 @@
 // The household agent's whole job, end to end, as filmed for the demo:
 //   1. Self Agent ID: it proves a real human is behind it and asks Bhav for the cheapest price
 //      (free answers first, then $0.01 USDC over x402 on Celo).
-//   2. Agent Vault sign-in: it signs in to amazon.in with the owner's saved login; it never sees
-//      the password, and Amazon's one-time code goes to the owner's phone.
+//   2. Agent Vault sign-in: it signs in to instacart.com with a login Agent Vault opened for it (a
+//      vault-minted password nobody sees); any captcha or email code is handed to the owner's phone.
 //   3. Agent Vault wallet: it pays a Buy service ($0.005, recent Reddit posts on the item's price) under the agent card.
 //   4. Agent Vault limit: it tries a $0.04 Buy service; the $0.02 per-payment cap refuses it.
 // Usage: node scripts/household.mjs "chicken curry cut" [--skip self,signin,deals,limit]
@@ -12,7 +12,7 @@ import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createBuyerFetch, readReceipt } from '../src/agent.mjs';
-import { signInToAmazon } from '../src/vault-signin.mjs';
+import { signInToInstacart } from '../src/vault-instacart.mjs';
 import { dealChatter, nearbyStores } from '../src/household.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -45,8 +45,8 @@ if (!skip.has('self')) {
 }
 
 if (!skip.has('signin')) {
-  say(2, 'Signing in to amazon.in through Agent Vault (the agent only holds tokens)…');
-  const r = await signInToAmazon({ log: (step, d) => { console.log(`    · ${step}${d ? ' ' + JSON.stringify(d) : ''}`); record('amazon_' + step, d); } });
+  say(2, 'Signing in to instacart.com through Agent Vault (the agent only holds tokens)…');
+  const r = await signInToInstacart({ log: (step, d) => { console.log(`    · ${step}${d ? ' ' + JSON.stringify(d) : ''}`); record('instacart_' + step, d); } });
   results.signin = r;
   console.log(`    → ${r.signedIn ? 'signed in' : `not signed in (${r.step})`}${r.message ? ': ' + r.message : ''}`);
 }
