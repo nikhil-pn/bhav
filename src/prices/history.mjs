@@ -9,9 +9,13 @@
 
 import { createReadStream, existsSync, statSync } from 'node:fs';
 import { createInterface } from 'node:readline';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
+// Our price archive (append-only JSON lines). Set BHAV_PRICE_ARCHIVE to its path; without one,
+// every item answers "no history yet" and the live prices still work.
 export const ARCHIVE = process.env.BHAV_PRICE_ARCHIVE
-  || '/home/nikhil/personal-intelligence/tools/pricewatch/state/history.jsonl';
+  || join(dirname(fileURLToPath(import.meta.url)), '..', '..', '.data', 'price-history.jsonl');
 
 const WINDOW_MS = 30 * 24 * 3600 * 1000;
 /** Within ±5% of the usual price counts as "normal". */
