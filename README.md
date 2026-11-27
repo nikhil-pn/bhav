@@ -9,7 +9,7 @@ Celo hackathon *Agents Open for Business* ([loops.house](https://www.loops.house
 Bhav sells live grocery prices to AI agents, and only to agents that have a real human behind them.
 
 1. **It knows the price.** Live prices from Zepto, Blinkit and Instamart (Kochi), with a deal check against our price history, sold per request over [x402](https://x402.celo.org) on Celo mainnet. ✅ live
-2. **One fair quota per human.** Every caller must sign its request with a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each **human** (not each agent) gets 3 free answers a day, then pays $0.01 USDC per answer. An agent with no human behind it is refused. ✅ live
+2. **One fair quota per human.** Every caller must sign its request with a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each **human** (not each agent) gets 3 free answers a day, then pays $0.01 USDC per answer. An agent with no human behind it is refused. Every answer also says what the human chose to disclose through Self, only whether they are an adult and their ID's country (e.g. `{"adult":true,"country":"IND"}`); `/v1/stats` counts humans by country. ✅ live
 3. **It acts for the household through [Agent Vault](https://agentvault.io).** The household agent pays for Buy services from the owner's Agent Vault wallet on Celo, under an agent card with hard limits ($0.02 per payment, $0.10 a week): a cheap call goes through, a $0.04 one is refused and the card pauses itself. It signs in to instacart.com with a login Agent Vault opened for it, whose password nobody has ever seen; a captcha or email code goes to the owner's phone. ✅ a $0.005 payment from the Agent Vault wallet settled on Celo ([tx](https://celoscan.io/tx/0x0bd4abc98ef89a65f0f6dee4e2d075d887a393204ea64b3ec5b45a805167cef4)) · ✅ the limit refusal ([screenshot](docs/proof/agent-vault-cap-refusal.png)) · ✅ signed in to instacart.com through Agent Vault with a login Agent Vault opened for it (the owner only solved Instacart's captcha on the live page): [log](docs/proof/instacart-signin-2026-11-28.log), [screenshot](docs/proof/instacart-signed-in-via-agent-vault-live-page.png)
 
 ## Try it
@@ -31,7 +31,7 @@ node scripts/household.mjs "chicken curry cut"
 
 ## Tests
 ```bash
-npm ci && npm test        # 29 tests, no network, no keys, no money
+npm ci && npm test        # 30 tests, no network, no keys, no money
 npm run test:live         # read-only check of the live mainnet API; confirms each settlement on Celo
 ```
 `npm test` runs the real service (`src/app.mjs`), the real buyer agent (`src/agent.mjs`), the real Self Agent ID verifier
