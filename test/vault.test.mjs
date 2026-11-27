@@ -31,7 +31,7 @@ function fakeVault({ capUsd = 0.02, balanceUsd = 0.5, approved = new Set(), paus
 }
 
 test('a cheap Buy service is paid from the Agent Vault wallet and its answer is read', async () => {
-  const v = fakeVault({ approved: new Set([new URL(BUY.xSearch.url).pathname]) });
+  const v = fakeVault({ approved: new Set([new URL(BUY.deals.url).pathname]) });
   const r = await dealChatter('chicken curry cut', { pay: v.payWith });
   assert.equal(r.paid, true);
   assert.equal(r.txHash, '0xabc');
@@ -49,7 +49,7 @@ test('a first payment to a new seller waits for the owner; nothing is paid', asy
 });
 
 test('the agent card cap refuses a $0.04 payment, then the card stays paused', async () => {
-  const v = fakeVault({ approved: new Set([new URL(BUY.places.url).pathname, new URL(BUY.xSearch.url).pathname]) });
+  const v = fakeVault({ approved: new Set([new URL(BUY.places.url).pathname, new URL(BUY.deals.url).pathname]) });
   const r = await nearbyStores('Kochi', { pay: v.payWith });
   assert.equal(r.paid, false);
   assert.equal(r.refused, true);
@@ -60,20 +60,20 @@ test('the agent card cap refuses a $0.04 payment, then the card stays paused', a
 });
 
 test('an empty wallet refuses before anything is sent', async () => {
-  const v = fakeVault({ balanceUsd: 0, approved: new Set([new URL(BUY.xSearch.url).pathname]) });
+  const v = fakeVault({ balanceUsd: 0, approved: new Set([new URL(BUY.deals.url).pathname]) });
   const r = await dealChatter('rice', { pay: v.payWith });
   assert.equal(r.code, 'insufficient_balance');
   assert.equal(r.payment.sent, false);
 });
 
 test('no wallet on the key: the owner is told what to do', async () => {
-  const r = await pay({ url: BUY.xSearch.url, maxAmount: '0.005' }, { catalog: async () => ({ walletNote: 'No agent wallet is set up yet. Set it up on Wallet.' }) });
+  const r = await pay({ url: BUY.deals.url, maxAmount: '0.005' }, { catalog: async () => ({ walletNote: 'No agent wallet is set up yet. Set it up on Wallet.' }) });
   assert.equal(r.code, 'no_wallet');
   assert.match(r.message, /Wallet/);
 });
 
 test('the agent never holds more than tokens: no card number, key or password crosses pay()', async () => {
-  const v = fakeVault({ approved: new Set([new URL(BUY.xSearch.url).pathname]) });
+  const v = fakeVault({ approved: new Set([new URL(BUY.deals.url).pathname]) });
   await dealChatter('milk', { pay: v.payWith });
   const sent = JSON.stringify(v.calls);
   assert.doesNotMatch(sent, /\b\d{13,19}\b/, 'no card number');

@@ -3,7 +3,7 @@
 //      (free answers first, then $0.01 USDC over x402 on Celo).
 //   2. Agent Vault sign-in: it signs in to amazon.in with the owner's saved login; it never sees
 //      the password, and Amazon's one-time code goes to the owner's phone.
-//   3. Agent Vault wallet: it pays a Buy service ($0.005, recent deal posts) under the agent card.
+//   3. Agent Vault wallet: it pays a Buy service ($0.005, recent Reddit posts on the item's price) under the agent card.
 //   4. Agent Vault limit: it tries a $0.04 Buy service; the $0.02 per-payment cap refuses it.
 // Usage: node scripts/household.mjs "chicken curry cut" [--skip self,signin,deals,limit]
 // Env: AGENTVAULT_API_KEY (~/.config/pi/bhav.env), BHAV_BUYER_ENV (Self Agent ID key), BHAV_URL.
@@ -52,7 +52,7 @@ if (!skip.has('signin')) {
 }
 
 if (!skip.has('deals')) {
-  say(3, `Paying $0.005 on Buy from the Agent Vault wallet for recent "${item}" deal posts…`);
+  say(3, `Paying $0.005 on Buy from the Agent Vault wallet for recent Reddit posts about "${item}" prices…`);
   const r = await dealChatter(item, { waitSeconds: 120 });
   results.deals = { paid: r.paid, pending: r.pending, code: r.code, message: r.message, amount: r.amount, tx: r.txHash, posts: r.posts };
   console.log(r.paid ? `    paid ${r.amount} ${r.token} · tx ${r.txHash} · ${r.posts.length} posts` : `    not paid: ${r.code || (r.pending ? 'waiting for the owner' : '')} ${r.message || ''}`);

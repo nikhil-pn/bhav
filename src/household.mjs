@@ -4,15 +4,16 @@
 import { pay as vaultPay } from './vault.mjs';
 
 export const BUY = {
-  xSearch: { url: 'https://gateway.usebuy.ai/v1/social/x/posts/search', usd: '0.005' },
+  deals: { url: 'https://gateway.usebuy.ai/v1/social/reddit/posts/search', usd: '0.005' },
   places: { url: 'https://usebuy.ai/google/places/v1/places:searchText', usd: '0.04' },
 };
 
-/** $0.005: recent posts about offers on the item (people post Zepto/Blinkit/Instamart deals). */
+/** $0.005: recent Reddit posts about the item on Zepto/Blinkit/Instamart (people share deals and price jumps).
+ * (Buy's X search seller failed twice after payment on 28 Nov, so Reddit it is.) */
 export async function dealChatter(item, { pay = vaultPay, waitSeconds } = {}) {
   const r = await pay({ waitSeconds,
-    url: BUY.xSearch.url, method: 'POST', maxAmount: BUY.xSearch.usd,
-    body: { query: `"${item}" (zepto OR blinkit OR instamart) (offer OR deal OR price) within_time:7d`, type: 'latest' },
+    url: BUY.deals.url, method: 'POST', maxAmount: BUY.deals.usd,
+    body: { query: `${item} zepto blinkit instamart price`, sort: 'new', timeRange: 'month' },
   });
   if (!r.paid) return { ...r, posts: [] };
   let posts = [];
@@ -28,11 +29,11 @@ export async function nearbyStores(area = 'Kochi', { pay = vaultPay } = {}) {
   });
 }
 
-/** Pull short post texts out of whatever shape the X search route answers with. */
+/** Pull short post texts out of whatever shape the search route answers with. */
 export function extractPosts(j, out = []) {
   if (!j || typeof j !== 'object' || out.length >= 5) return out;
   if (Array.isArray(j)) { for (const x of j) extractPosts(x, out); return out; }
-  const text = j.full_text || j.text || j.legacy?.full_text;
+  const text = j.title || j.full_text || j.text || j.legacy?.full_text;
   if (typeof text === 'string' && text.length > 10) out.push(text.replace(/\s+/g, ' ').slice(0, 160));
   for (const v of Object.values(j)) if (v && typeof v === 'object') extractPosts(v, out);
   return [...new Set(out)].slice(0, 5);
