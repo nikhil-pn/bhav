@@ -33,14 +33,15 @@ export async function catalog() {
  * @param {string} o.maxAmount  the most the agent itself agrees to pay, USD, e.g. "0.01"
  * @param {'GET'|'POST'} [o.method] @param {object|string} [o.body] @param {string} [o.idempotencyKey]
  * @param {number} [o.waitSeconds] wait up to this long for the owner's approval in the Agent Vault app
+ * @param {{catalog?:Function, payRequest?:Function}} [deps] test seams
  */
-export async function pay(o) {
+export async function pay(o, deps = {}) {
   const { apiKey } = vaultEnv();
-  const cat = await catalog();
+  const cat = await (deps.catalog ?? catalog)();
   const wallet = cat.wallets?.[0];
   if (!wallet) return { paid: false, refused: true, code: 'no_wallet', message: cat.walletNote || 'No Agent Vault wallet for this key.' };
   try {
-    const r = await payRequest({
+    const r = await (deps.payRequest ?? payRequest)({
       card: wallet.card, url: o.url, method: o.method, body: o.body, maxAmount: o.maxAmount,
       idempotencyKey: o.idempotencyKey, apiKey, proxyUrl: process.env.SELF_AGENT_PAY_PROXY_URL,
       ...(o.waitSeconds ? { wait: { timeoutMs: o.waitSeconds * 1000 } } : {}),
