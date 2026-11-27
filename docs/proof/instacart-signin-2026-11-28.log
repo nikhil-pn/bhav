@@ -1,4 +1,4 @@
-# Agent Vault sign-in to instacart.com, 28 Nov 2026 (times UTC). Produced by src/vault-instacart.mjs.
+# Agent Vault sign-in to instacart.com, 27 Nov 2026 22:01–22:06 UTC (28 Nov 03:31–03:36 IST). Produced by src/vault-instacart.mjs.
 # The agent held only Agent Vault tokens (av_login_…); the login was opened by Agent Vault with a vault-minted
 # password nobody saw, after the owner approved it in the dashboard (21:49).
 22:01:00 email_submitted            (token typed by Agent Vault's proxy)
