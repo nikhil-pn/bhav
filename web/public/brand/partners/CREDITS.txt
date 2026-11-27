@@ -1,0 +1,14 @@
+Partner marks shown in the "Works with" strip, downloaded on 2026-11-28 and kept as downloaded, except that a
+viewBox attribute (matching the file's own width and height) was added to self.svg and instacart.svg so they scale;
+the site shows them in one colour (CSS filter), never redrawn or recoloured otherwise.
+They belong to their owners and are used only to say which services Bhav works with.
+
+celo.svg         Celo wordmark. Official: inline SVG on https://celo.org/brand-kit (Celo Foundation).
+self.svg         Self logo. Official: https://framerusercontent.com/images/hMVasQC3L0NyW9mvZutpuLYY1Xk.svg,
+                 the logo file used on https://self.xyz (Self Labs).
+agent-vault.svg  Agent Vault badge. Official: https://agentvault.io/brand/badge.svg (shown next to the
+                 text "Agent Vault").
+x402.svg         x402 logo. Official: https://x402.org/wp-content/uploads/sites/10/2026/06/x402_logo.svg
+instacart.svg    Instacart logo and wordmark. Wikimedia Commons:
+                 https://commons.wikimedia.org/wiki/File:Instacart_logo_and_wordmark.svg (marked public domain,
+                 author: Instacart). Trademark of Maplebear Inc. (Instacart).
