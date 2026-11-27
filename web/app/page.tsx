@@ -174,7 +174,7 @@ function Vault() {
       id="vault"
       i="its"
       rest="hands."
-      lead="Bhav finds the price. The household agent acts on it through Agent Vault, with your password and your money out of its reach."
+      lead="Bhav finds the price. The household agent acts on it through Agent Vault: store passwords and the wallet key stay in the vault, and every payment is capped."
       className="border-t border-line"
     >
       <ol className="grid grid-cols-1 gap-7 md:grid-cols-2">
