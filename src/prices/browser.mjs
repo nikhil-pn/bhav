@@ -7,7 +7,6 @@
 
 import { createRequire } from 'node:module';
 import { existsSync } from 'node:fs';
-import { homedir } from 'node:os';
 import { join } from 'node:path';
 
 const IDLE_CLOSE_MS = Number(process.env.BHAV_BROWSER_IDLE_MS || 5 * 60 * 1000);
@@ -27,12 +26,7 @@ async function loadChromium() {
   for (const name of ['playwright', 'playwright-core']) {
     try { return (await import(name)).chromium; } catch { /* not resolvable from here */ }
   }
-  const dirs = [
-    process.env.BHAV_PLAYWRIGHT_DIR,
-    join(homedir(), 'personal-intelligence/tools/pricewatch'),
-    join(homedir(), 'automation'),
-    join(homedir(), 'playwright-lab'),
-  ].filter(Boolean);
+  const dirs = [process.env.BHAV_PLAYWRIGHT_DIR].filter(Boolean);
   for (const dir of dirs) {
     const req = createRequire(join(dir, 'package.json'));
     for (const name of ['playwright', 'playwright-core']) {
