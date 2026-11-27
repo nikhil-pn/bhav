@@ -17,7 +17,8 @@ if (!process.env.BHAV_PAY_TO) throw new Error('BHAV_PAY_TO missing');
 // Humans are proven on Celo MAINNET (real passports / Aadhaar) even while payments are
 // tested on Sepolia. sybilLimit(10) = the registry's own per-human cap; we still get the
 // nullifier, which is what the quota is keyed on.
-const verifier = SelfAgentVerifier.create().network('mainnet').sybilLimit(10).build();
+// includeCredentials(): read the human's disclosed age and nationality (src/app.mjs uses only those two).
+const verifier = SelfAgentVerifier.create().network('mainnet').sybilLimit(10).includeCredentials().build();
 
 const facilitator = new HTTPFacilitatorClient({
   url: NETWORKS[NET].facilitator,
