@@ -39,16 +39,24 @@ BHAV_BUYER_ENV=my-agent.env BHAV_URL=https://devbox.tail84790b.ts.net X402_NETWO
 ```
 The buyer refuses to sign more than $0.02 per answer (`BHAV_BUYER_MAX`, USDC base units).
 
+## 4. Run the tests
+
+```bash
+npm ci && npm test      # 17 end-to-end tests of the gate, the per-human quota and x402; no network, no keys, no money
+npm run test:live       # read-only: live API health, the refusal, and each settlement confirmed on Celo mainnet
+```
+
 ## What is where
 
 | Piece | File | What it does |
 |---|---|---|
-| Service | `src/server.mjs` | Self Agent ID check (mainnet registry) → free quota per **human** (Self nullifier) → x402 `exact` USDC via the Celo facilitator |
-| Buyer agent | `src/buyer.mjs` | signs each request with its Self Agent ID key, pays x402 under a hard cap |
+| Service | `src/app.mjs` (wired by `src/server.mjs`) | Self Agent ID check (mainnet registry) → free quota per **human** (Self nullifier) → x402 `exact` USDC via the Celo facilitator |
+| Buyer agent | `src/agent.mjs` (CLI `src/buyer.mjs`) | signs each request with its Self Agent ID key, pays x402 under a hard cap |
 | Prices | `src/prices/` | live search of the three stores by headless Chrome (reads the JSON the store page itself loads) + deal check against our price archive |
 | Identity | `scripts/register-8004.mjs`, `scripts/self-register.mjs` | ERC-8004 registration; Self Agent ID for our **own** key (wallet-free mode, key never leaves the machine) |
 | Tagging | `scripts/chain.mjs` | every transaction Bhav sends carries attribution tag `celo_bc5d483f879e` |
 | Website | `web/` | Next.js; live demo, live refusal, live stats |
+| Tests | `test/` | real app, agent, Self verifier and x402 libs against a local registry + facilitator that check signatures |
 
 ## Onchain proof (Celo mainnet)
 
