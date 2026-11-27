@@ -6,7 +6,8 @@ import { formatEther, parseEventLogs } from 'viem';
 import { fromDataSuffix } from '@celo/attribution-tags';
 import { clients } from './chain.mjs';
 
-const AGENT_URI = 'https://raw.githubusercontent.com/nikhil-pn/bhav/main/agent.json';
+// BHAV_AGENT_URI picks another agent card (e.g. household-agent.json); BHAV_ENV_FILE picks its key.
+const AGENT_URI = process.env.BHAV_AGENT_URI || 'https://raw.githubusercontent.com/nikhil-pn/bhav/main/agent.json';
 
 const abi = [
   { type: 'function', name: 'register', stateMutability: 'nonpayable',

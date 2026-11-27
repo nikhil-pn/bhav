@@ -1,0 +1,13 @@
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "Bhav household agent",
+  "description": "A household's grocery agent: asks Bhav for the cheapest live price (signed with its Self Agent ID #212, paying x402 USDC on Celo under a $0.02 cap) and acts through Agent Vault, signing in to stores and paying Buy services without ever holding a password, card or wallet key. Built for the Celo Agents Open for Business hackathon.",
+  "image": "https://github.com/nikhil-pn.png",
+  "services": [
+    { "name": "web", "endpoint": "https://github.com/nikhil-pn/bhav" },
+    { "name": "wallet", "endpoint": "eip155:42220:0x964F176C16f484C4D035b3958a20F5F648897334" }
+  ],
+  "x402Support": true,
+  "active": true,
+  "supportedTrust": ["reputation"]
+}
