@@ -28,7 +28,7 @@ Judging: same as above.
 |---|---|---|
 | The agent signs in on a regular website through Agent Vault (meets the requirement) | ✅ | instacart.com, 28 Nov 22:06 UTC: login opened by Agent Vault (owner approved; vault-minted password), captcha solved by the owner on the live page, account page reached: [log](proof/instacart-signin-2026-11-28.log), [screenshot](proof/instacart-signed-in-via-agent-vault-live-page.png). amazon.in tried first: blocked as automated after the password |
 | Optional: a real, low-value checkout | — | not planned |
-| A spending limit or rule in Agent Vault, and the demo shows the agent hitting it (livestream, 24 Nov) | ✅ | agent card $0.02/payment, $0.10/week; $0.04 payment refused `limit_reached`, card auto-paused: [screenshot](proof/agent-vault-cap-refusal.png) |
+| A spending limit or rule in Agent Vault, and the demo shows the agent hitting it (livestream, 24 Nov) | ✅ | agent card $0.05/payment, $0.10/week: two $0.04 store lookups paid, the third refused "over the weekly limit", card auto-paused ([screenshot](proof/agent-vault-weekly-budget-refusal.png)); earlier with a $0.02 cap, refused "over the per-transaction cap" ([screenshot](proof/agent-vault-cap-refusal.png)) |
 | The agent never sees the card number or password | ✅ by design | agent holds tokens only; Agent Vault pays and signs in (`src/vault.mjs`, `src/vault-signin.mjs`); test checks no secret crosses `pay()` |
 | A public post by a team member with demo clip + repo link (livestream, 24 Nov) | ⏳ | owner posts after the demo video |
 | Pays onchain with x402 | 🟡 | Bhav's own x402 [settlement tx](https://celoscan.io/tx/0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090) |
