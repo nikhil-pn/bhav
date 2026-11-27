@@ -12,7 +12,11 @@
     "start": "node src/server.mjs",
     "test": "node --test \"test/*.test.mjs\"",
     "test:live": "node scripts/smoke.mjs",
-    "buyer": "node src/buyer.mjs"
+    "buyer": "node src/buyer.mjs",
+    "agent:new": "node scripts/new-agent.mjs",
+    "agent:link": "BHAV_NETWORK=mainnet BHAV_ENV_FILE=my-agent.env node scripts/self-register.mjs link",
+    "agent:status": "BHAV_NETWORK=mainnet BHAV_ENV_FILE=my-agent.env node scripts/self-register.mjs status",
+    "ask": "BHAV_BUYER_ENV=my-agent.env X402_NETWORK=mainnet node src/buyer.mjs"
   },
   "dependencies": {
     "@agentvault/playwright": "https://app.agentvault.io/sdk/agentvault-playwright.tgz",
