@@ -18,6 +18,11 @@ This file will grow as the build goes on: where the agent was wrong, and how eac
 | Agent Vault payments and limits | tests against a fake Agent Vault that answers like the live one; then live: a $0.04 payment refused by the $0.02 cap, a $0.005 Buy payment settled on Celo | `test/vault.test.mjs`, `docs/proof/` |
 | CI | `npm ci && npm test` on every push | `.github/workflows/test.yml` |
 
+## The website
+The agent redesigned https://bhav.exprmnts.fun on 28 Nov at the owner's request: a sticker style, an original logo (a rupee price tag,
+`web/public/brand/`), one short page instead of two, no emojis, and partner marks from their official sources (`web/public/brand/partners/CREDITS.txt`).
+It checked the build at phone and desktop widths with screenshots and confirmed the live site after each deploy.
+
 ## Where the agent was wrong (and what fixed it)
 | When | Mistake | Caught by | Fix |
 |---|---|---|---|
