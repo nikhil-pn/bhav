@@ -13,6 +13,8 @@ Bhav sells live grocery prices to AI agents, and only to agents that have a real
 3. **It acts for the household through [Agent Vault](https://agentvault.io).** When the apps are dear or out of stock, the household agent finds open supermarkets nearby (Google Places on [Buy](https://usebuy.ai), $0.04 a lookup), paid from the owner's Agent Vault wallet on Celo under a weekly grocery-research budget the owner set on its Agent Vault card ($0.10 a week, $0.05 a payment): two lookups fit, the third is refused and the card pauses until the owner resumes it. It also signs in to a store (instacart.com) with a login whose password nobody has seen. [paid lookup](https://celoscan.io/tx/0x8fcb23fb4490a2046fe876f31be7270b0870b7140bac28e03d13fbaa9ccd1a54) · [refused over the weekly budget](docs/proof/agent-vault-weekly-budget-refusal.png) · [Instacart sign-in](docs/proof/instacart-signin-2026-11-28.log)
 
 ## Try it
+Want your own agent to use it? **[docs/JOIN.md](docs/JOIN.md)**: 10 minutes, your own Self ID and a few cents of your own USDC.
+
 | Who | How |
 |---|---|
 | A person | open **https://bhav.exprmnts.fun**, ask for an item (free, rate-limited website lane), and press the button that sends a request with no Self Agent ID to watch it get refused |
@@ -20,7 +22,7 @@ Bhav sells live grocery prices to AI agents, and only to agents that have a real
 | Anyone | live counters and settlement tx hashes: `curl -s https://devbox.tail84790b.ts.net/v1/stats` |
 
 ## The household agent, end to end
-Each step has run for real on Celo mainnet (links below): the x402 payment on 22 Nov, the Agent Vault steps on 28 Nov. Step 1 pays with the household agent's own key, capped at $0.02 per answer in code (`src/agent.mjs`); steps 2–4 hold no secret at all.
+Each step has run for real (links below): the x402 payment on Celo mainnet on 22 Nov; the Agent Vault steps on 27–28 Nov (payments on Celo mainnet; the Instacart sign-in is off-chain). Step 1 pays with the household agent's own key, capped at $0.02 per answer in code (`src/agent.mjs`); steps 2–4 hold no secret at all.
 ```bash
 node scripts/household.mjs "chicken curry cut"
 ```
@@ -54,7 +56,7 @@ a page released unsolved stops the flow. CI runs it all on every push.
 
 Agent wallet: `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F` · attribution tag: `celo_bc5d483f879e`.
 
-Both agents are registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004): Bhav is agent #10088 and the household agent is agent #10164 ([tx](https://celoscan.io/tx/0xea427047073fd4e17fd0a6dc36eb78de4dc989a723188415c4acca5609d01bc7), card `household-agent.json`). Every transaction Bhav itself sends carries our [attribution tag](https://github.com/celo-org/attribution-tags).
+Both agents are registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004): Bhav is agent #10088 and the household agent is agent #10164 ([tx](https://celoscan.io/tx/0xea427047073fd4e17fd0a6dc36eb78de4dc989a723188415c4acca5609d01bc7), card `household-agent.json`). Every transaction Bhav and the household agent send carries our [attribution tag](https://github.com/celo-org/attribution-tags) (Loops: tag seen, agent wallet on file). x402 settlements are sent by Celo's facilitator, which does not yet support the x402 builder-code extension, so they carry no tag.
 
 ## Proof (Celo mainnet unless noted)
 | What | Link |
