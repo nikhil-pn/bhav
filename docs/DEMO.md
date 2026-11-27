@@ -26,8 +26,8 @@ open the tx on celoscan.
 1. Self Agent ID quote (as above).
 2. Instacart sign-in through Agent Vault: the agent holds only `av_login_…` tokens; Instacart's captcha goes to the phone,
    solved there (phone screen recording); agent continues and lands on the account page.
-3. Pays $0.005 on Buy from the Agent Vault wallet for recent Reddit price posts → tx on celoscan.
-4. Tries a $0.04 Buy service → **refused: over the per-transaction cap**, card paused (Agent Vault Activity page).
+3. Pays $0.04 on Buy (Google Places) from the Agent Vault wallet: open supermarkets nearby → tx on celoscan.
+4. Looks up again → **refused: over the weekly limit** ($0.10/week budget), card paused (Agent Vault Activity page).
 **Say:** "The agent never sees a password, a card or a wallet key, and it cannot spend past the limit I set."
 
 ## 1:50–2:15 · Proof
@@ -40,7 +40,7 @@ Repo and live demo in the post."
 
 ## Before recording
 - Agent Vault card active (Agent cards → Resume, if paused by an earlier cap test).
-- Agent Vault wallet holds ≥ $0.05 USDC; buyer #212 holds ≥ $0.02 USDC.
+- Agent Vault wallet holds ≥ $0.10 USDC; buyer #212 holds ≥ $0.02 USDC. A fresh week (or a raised weekly limit) gives two paid lookups before the refusal.
 - Use a fresh item for the free answers, or record the 4th call of the day for the x402 shot.
 
 ## The post (owner)

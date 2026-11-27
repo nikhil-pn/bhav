@@ -25,7 +25,8 @@ This file will grow as the build goes on: where the agent was wrong, and how eac
 | 28 Nov | the first live smoke test failed on a settlement tx that does exist | re-reading the tx on three RPCs | public RPCs drop requests: the check now retries and falls back |
 | 28 Nov | the agent's own smoke-test refusals were counted as real refused agents in the public stats | reading `/v1/stats` before and after | checks send `x-bhav-check: smoke` and are left out |
 | 28 Nov | the amazon.in sign-in looked successful (no sign-in form on the page) | adding a positive check (order links) | it was Amazon's automated-access block page; see below |
-| 28 Nov | the deal-posts step used Buy's X search, whose seller failed twice after payment | Agent Vault answered `payment_outcome_unknown` | switched to Buy's Reddit search, which settled |
+| 28 Nov | the deal-posts step used Buy's X search, whose seller failed twice after payment | Agent Vault answered `payment_outcome_unknown` (both later "released, not paid") | switched to Buy's Reddit search, which settled |
+| 28 Nov | the Reddit step returned community names, not posts: filler with no job | a live run and an independent judge | replaced by a Google Places lookup of open supermarkets nearby, a real household job; field mask sent as `fields=` because Agent Vault cannot send headers |
 
 ## Things that did not work, on purpose left in
 - **amazon.in through Agent Vault.** The proxy reaches the sign-in form and types the email and password, then Amazon serves its
