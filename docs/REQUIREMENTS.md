@@ -18,9 +18,9 @@ Official text: https://www.loops.house/agents-open-for-business (read 21 Nov 202
 Judging: integration 30%, innovation and value 30%, named user and real job 25%, real use 15%.
 | Requirement | Status | Proof |
 |---|---|---|
-| A service where Self Agent ID decides who is served, paid or limited | ⏳ | |
-| Payments through x402 on Celo | ⏳ | |
-| Demo shows an agent with no human behind it being refused or limited (host's tip) | ⏳ | |
+| A service where Self Agent ID decides who is served, paid or limited | ✅ | `src/app.mjs` gate + free quota per human (Self nullifier); live at https://devbox.tail84790b.ts.net/v1/quote; `npm test` |
+| Payments through x402 on Celo | ✅ | $0.01 USDC on mainnet, [settlement tx](https://celoscan.io/tx/0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090); `npm run test:live` confirms it on chain |
+| Demo shows an agent with no human behind it being refused or limited (host's tip) | ✅ | refusal button on https://bhav.exprmnts.fun; `curl -si https://devbox.tail84790b.ts.net/v1/quote?q=eggs` → 403 |
 
 ## Agent Vault: Online & Onchain Checkouts
 Judging: same as above.
@@ -28,4 +28,4 @@ Judging: same as above.
 |---|---|---|
 | The agent signs in on a regular website through Agent Vault (meets the requirement) | ⏳ | |
 | Optional: a real, low-value checkout | ⏳ | |
-| Pays onchain with x402 | ⏳ | |
+| Pays onchain with x402 | ✅ | [settlement tx](https://celoscan.io/tx/0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090) |
