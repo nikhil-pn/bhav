@@ -1,0 +1,9 @@
+# Agent Vault sign-in to instacart.com, 28 Nov 2026 (times UTC). Produced by src/vault-instacart.mjs.
+# The agent held only Agent Vault tokens (av_login_…); the login was opened by Agent Vault with a vault-minted
+# password nobody saw, after the owner approved it in the dashboard (21:49).
+22:01:00 email_submitted            (token typed by Agent Vault's proxy)
+22:01:07 captcha_to_owner           (Instacart showed reCAPTCHA; live page handed to the owner's phone)
+22:05:04 owner_finished_captcha {"outcome":"solved","seconds":237}
+22:06:23 signed_in                  (instacart.com/store/account opened with no sign-in form)
+RESULT {"signedIn":true,"step":"signed_in"}
+# Screenshot of the owner's live page at that moment: instacart-signed-in-via-agent-vault-live-page.png
