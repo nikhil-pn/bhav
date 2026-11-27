@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter_Tight, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Baloo_2, Bricolage_Grotesque, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE_URL } from "@/lib/bhav";
 
-const sans = Inter_Tight({ variable: "--font-sans-body", subsets: ["latin"] });
-const serif = Instrument_Serif({ variable: "--font-serif-display", subsets: ["latin"], weight: "400", style: ["italic", "normal"] });
-const mono = JetBrains_Mono({ variable: "--font-mono-code", subsets: ["latin"] });
+const body = Inter_Tight({ variable: "--font-body", subsets: ["latin"] });
+const disp = Bricolage_Grotesque({ variable: "--font-disp", subsets: ["latin"], weight: ["600", "700", "800"] });
+const hindi = Baloo_2({ variable: "--font-hindi", subsets: ["devanagari"], weight: ["700", "800"] });
+const code = JetBrains_Mono({ variable: "--font-code", subsets: ["latin"] });
 
 const title = "Bhav: the grocery price, from one agent to another";
 const description =
@@ -20,8 +21,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1d2421",
-  colorScheme: "dark",
+  themeColor: "#fff6e3",
+  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -29,9 +30,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${body.variable} ${disp.variable} ${hindi.variable} ${code.variable} antialiased`}
+    >
       <body className="min-h-dvh font-sans">
-        <a href="#main" className="skip tap rounded-full bg-lime px-4 py-2 font-semibold text-ink">
+        <a href="#main" className="skip pill tap bg-turmeric px-4 py-2 text-ink">
           Skip to content
         </a>
         {children}
