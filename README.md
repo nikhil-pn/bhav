@@ -2,26 +2,45 @@
 
 > **भाव** (*bhav*): Hindi for "price", as in *mandi bhav*, the market rate.
 
-**Deadline: Mon 7 Dec 2026, 09:00 GMT (14:30 IST).** Celo hackathon *Agents Open for Business* ([loops.house](https://www.loops.house/agents-open-for-business)).
+**Live demo: https://bhav.exprmnts.fun** · API on Celo mainnet: `https://devbox.tail84790b.ts.net` ([one-minute check for judges and agents](AGENTS.md))
 
-Bhav is a grocery agent for Indian households that will do the whole job. **Work in progress:** the identity parts are live on mainnet (see Proof); the service below is being built, and each item gets a proof link when it works.
+Celo hackathon *Agents Open for Business* ([loops.house](https://www.loops.house/agents-open-for-business)), tracks Self Agent ID and Agent Vault.
 
-1. **It knows the price.** Bhav will sell live grocery prices from Zepto, Blinkit and Instamart (Kochi) to other agents, per request, over [x402](https://x402.celo.org) on Celo.
-2. **One fair quota per human.** Every caller must carry a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each human gets a fair free quota; an agent with no human behind it is limited or refused.
-3. **It fills the cart.** The household's agent will pick the cheapest offer, signs in to the store through [Agent Vault](https://agentvault.io) (it never sees the password or card) and fills the cart. The person approves the payment on their phone.
+Bhav sells live grocery prices to AI agents, and only to agents that have a real human behind them.
+
+1. **It knows the price.** Live prices from Zepto, Blinkit and Instamart (Kochi), with a deal check against our price history, sold per request over [x402](https://x402.celo.org) on Celo mainnet. ✅ live
+2. **One fair quota per human.** Every caller must sign its request with a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each **human** (not each agent) gets 3 free answers a day, then pays $0.01 USDC per answer. An agent with no human behind it is refused. ✅ live
+3. **It fills the cart.** The household's agent picks the cheapest offer, signs in to the store through [Agent Vault](https://agentvault.io) (it never sees the password or card) and fills the cart; the person approves the payment on their phone. ⏳ in progress, not live yet
+
+## Try it
+| Who | How |
+|---|---|
+| A person | open **https://bhav.exprmnts.fun**, ask for an item (free, rate-limited website lane), and press the button that sends a request with no Self Agent ID to watch it get refused |
+| An agent | `curl -si "https://devbox.tail84790b.ts.net/v1/quote?q=eggs"` → `403 human_backed_agents_only`; a human-backed agent uses `node src/buyer.mjs "eggs 30"` (steps in [AGENTS.md](AGENTS.md)) |
+| Anyone | live counters and settlement tx hashes: `curl -s https://devbox.tail84790b.ts.net/v1/stats` |
+
+## Tests
+```bash
+npm ci && npm test        # 17 end-to-end tests, no network, no keys, no money
+npm run test:live         # read-only check of the live mainnet API; confirms each settlement on Celo
+```
+`npm test` runs the real service (`src/app.mjs`), the real buyer agent (`src/agent.mjs`), the real Self Agent ID verifier
+and the real x402 libraries. Only the chain and the facilitator are local fakes (`test/fakes.mjs`), and the fake
+facilitator checks the buyer's EIP-3009 USDC signature (payee, amount, asset, deadline, nonce) the way Celo's does.
+Covered: refusal with no Self Agent ID, with no human in the registry, with an expired proof, with a non-Self proof provider,
+replayed and re-targeted signatures; 3 free answers then a $0.01 x402 payment with a matching settlement; 402 terms when the agent
+does not pay; free quota shared by all agents of one human; the buyer's spending cap; a forged payment; quota reset at midnight
+and across restarts; failed lookups never using up a free answer; the website lane; stats. CI runs it on every push.
 
 ## Tracks
 | Track | Sponsor | What we show |
 |---|---|---|
-| Self Agent ID: Verified Agent Payments | Self | Agent ID decides who is served, how much is free, and who pays, with payments over x402 |
-| Agent Vault: Online & Onchain Checkouts | Self | the agent signs in and checks out on a real store without seeing secrets, and pays for data over x402 |
+| Self Agent ID: Verified Agent Payments | Self | Agent ID decides who is served, how much is free, and who pays, with payments over x402 ✅ |
+| Agent Vault: Online & Onchain Checkouts | Self | the agent signs in and checks out on a real store without seeing secrets, and pays for data over x402 ⏳ |
 
 Agent wallet: `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F` · attribution tag: `celo_bc5d483f879e`.
 
-Every agent is registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004), and every transaction Bhav sends carries our [attribution tag](https://github.com/celo-org/attribution-tags).
-
-## Status
-Day 1 (21 Nov 2026): repo created, enrolled on Loops House, agent wallet registered with the event. The build log, proof table and setup steps will be added as each part works on Celo mainnet.
+Every agent is registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004), and every transaction Bhav itself sends carries our [attribution tag](https://github.com/celo-org/attribution-tags).
 
 ## Proof (Celo mainnet unless noted)
 | What | Link |
