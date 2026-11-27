@@ -11,8 +11,11 @@ import { createApp, NETWORKS } from './app.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const NET = process.env.X402_NETWORK === 'mainnet' ? 'mainnet' : 'testnet';
-if (!process.env.X402_API_KEY) throw new Error('X402_API_KEY missing');
-if (!process.env.BHAV_PAY_TO) throw new Error('BHAV_PAY_TO missing');
+// Starts without secrets: the gate, free answers, the website demo, stats and the 402 price terms all work.
+// Only settling a paid answer needs the facilitator key (X402_API_KEY). BHAV_PAY_TO is public: it defaults
+// to Bhav's own agent wallet.
+const PAY_TO = process.env.BHAV_PAY_TO || '0x33A80697Ac038279ca8d70F4c2Cef82672683b9F';
+if (!process.env.X402_API_KEY) console.warn('X402_API_KEY not set: free answers and the gate work; paid answers cannot settle until it is set.');
 
 // Humans are proven on Celo MAINNET (real passports / Aadhaar) even while payments are
 // tested on Sepolia. sybilLimit(10) = the registry's own per-human cap; we still get the
@@ -23,7 +26,7 @@ const verifier = SelfAgentVerifier.create().network('mainnet').sybilLimit(10).in
 const facilitator = new HTTPFacilitatorClient({
   url: NETWORKS[NET].facilitator,
   createAuthHeaders: async () => {
-    const h = { 'X-API-Key': process.env.X402_API_KEY };
+    const h = process.env.X402_API_KEY ? { 'X-API-Key': process.env.X402_API_KEY } : {};
     return { verify: h, settle: h, supported: h };
   },
 });
@@ -36,7 +39,7 @@ async function quote(q) {
 
 const app = createApp({
   net: NET,
-  payTo: process.env.BHAV_PAY_TO,
+  payTo: PAY_TO,
   verifier,
   facilitator,
   quote,
@@ -49,5 +52,5 @@ const app = createApp({
 
 const port = Number(process.env.PORT || 3420);
 app.listen(port, process.env.HOST || '127.0.0.1', () => {
-  console.log(`bhav on :${port} · x402 ${NET} (${NETWORKS[NET].caip}) · payTo ${process.env.BHAV_PAY_TO} · ${process.env.BHAV_FREE_PER_DAY || 3} free/human/day`);
+  console.log(`bhav on :${port} · x402 ${NET} (${NETWORKS[NET].caip}) · payTo ${PAY_TO} · ${process.env.BHAV_FREE_PER_DAY || 3} free/human/day`);
 });
