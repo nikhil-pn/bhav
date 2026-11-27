@@ -26,7 +26,7 @@ Judging: integration 30%, innovation and value 30%, named user and real job 25%,
 Judging: same as above.
 | Requirement | Status | Proof |
 |---|---|---|
-| The agent signs in on a regular website through Agent Vault (meets the requirement) | 🟡 | amazon.in login saved by the owner; the proxy types it, then Amazon serves its automated-access block page (`src/vault-signin.mjs`). Next: instacart.com, a verified recipe (`src/vault-instacart.mjs`) |
+| The agent signs in on a regular website through Agent Vault (meets the requirement) | ✅ | instacart.com, 28 Nov 22:06 UTC: login opened by Agent Vault (owner approved; vault-minted password), captcha solved by the owner on the live page, account page reached: [log](proof/instacart-signin-2026-11-28.log), [screenshot](proof/instacart-signed-in-via-agent-vault-live-page.png). amazon.in tried first: blocked as automated after the password |
 | Optional: a real, low-value checkout | — | not planned |
 | A spending limit or rule in Agent Vault, and the demo shows the agent hitting it (livestream, 24 Nov) | ✅ | agent card $0.02/payment, $0.10/week; $0.04 payment refused `limit_reached`, card auto-paused: [screenshot](proof/agent-vault-cap-refusal.png) |
 | The agent never sees the card number or password | ✅ by design | agent holds tokens only; Agent Vault pays and signs in (`src/vault.mjs`, `src/vault-signin.mjs`); test checks no secret crosses `pay()` |
