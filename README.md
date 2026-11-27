@@ -34,7 +34,7 @@ Only agents with a real, unique human behind them get an answer. And the househo
 - **No human behind it? No answer.** Every request must be signed with a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique person stands behind the agent. Bots get `403`.
 - **Three free a day, per person. Then one cent.** The free quota belongs to the human, not the agent: ten agents from one person share it. After that, each answer costs $0.01 USDC, paid by the agent over [x402](https://x402.celo.org) on Celo mainnet. No account, no API key.
 - **The household agent's hands: [Agent Vault](https://agentvault.io).** It signs in to a store without ever seeing the password, pays for services from a capped wallet, and is refused when it hits the weekly budget its owner set.
-- **Built and checked in public.** 32 tests run the real Self verifier and x402 libraries; a live check confirms every settlement on Celo; every claim below has a link.
+- **Built and checked in public.** 35 tests run the real Self verifier, x402 libraries and MCP client; a live check confirms every settlement on Celo; every claim below has a link.
 
 Built during Celo's *Agents Open for Business* hackathon (from 21 Nov 2026). See [Hackathon notes](#hackathon-notes).
 
@@ -46,7 +46,7 @@ Built during Celo's *Agents Open for Business* hackathon (from 21 Nov 2026). See
 | The API agents call | `https://devbox.tail84790b.ts.net/v1/quote?q=…` ([health](https://devbox.tail84790b.ts.net/health), [stats](https://devbox.tail84790b.ts.net/v1/stats)) |
 | Bhav: ERC-8004 agent **#10088**, Self Agent ID **#211**, payTo `0x33A8…3b9F` | [registration](https://celoscan.io/tx/0xd041f1b77e5a7d1791dc0c3e4e6158cb3a4c44f2c4471d5e2c5d4c3c34d1bab4) · [Self proof](https://celoscan.io/tx/0x37226569553840e5e0afbbf2f62af16a2e6530c2b0eb79174beafde4ec51b71b) |
 | Household agent: ERC-8004 agent **#10164**, Self Agent ID **#212** | [registration](https://celoscan.io/tx/0xea427047073fd4e17fd0a6dc36eb78de4dc989a723188415c4acca5609d01bc7) |
-| A paid answer: 3 free, then $0.01 USDC over x402 | [settlement](https://celoscan.io/tx/0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090) |
+| Paid answers: 3 free, then $0.01 USDC over x402 | [CLI agent](https://celoscan.io/tx/0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090) · [MCP agent](https://celoscan.io/tx/0x0c3b85edefffd6994bc3497e6bd8d402b71836e69db27a54eaf9a5c1e6ef699f) |
 | Agent Vault wallet paying Buy (two store lookups) | [lookup 1](https://celoscan.io/tx/0xc2f9f9c9bcdd1986c130174e5220df4ac5ea8dec57f27288e4c7bd98624698bf) · [lookup 2](https://celoscan.io/tx/0x8fcb23fb4490a2046fe876f31be7270b0870b7140bac28e03d13fbaa9ccd1a54) |
 | The third lookup refused by Agent Vault, over the weekly budget | [screenshot](docs/proof/agent-vault-weekly-budget-refusal.png) |
 | Agent Vault sign-in to a store (instacart.com) | [log](docs/proof/instacart-signin-2026-11-28.log) · [owner's live view](docs/proof/instacart-signed-in-via-agent-vault-live-page.png) |
@@ -95,7 +95,14 @@ npm run agent:new && npm run agent:link     # then confirm in the Self app
 npm run ask -- "chicken curry cut"
 ```
 
-### 4. The household agent, end to end
+### 4. From Claude, Cursor or any MCP agent
+Bhav ships an MCP server ([`src/mcp.mjs`](src/mcp.mjs)) and an agent skill ([`SKILL.md`](SKILL.md)). After steps 3's `agent:new` and `agent:link`:
+```bash
+claude mcp add bhav -- node "$PWD/src/mcp.mjs"
+```
+Then ask the assistant "where is milk cheapest in Kochi right now?": it calls `get_price`, signs with its Self Agent ID and pays the cent itself. Live run: Milma milk at ₹54/L on Instamart, paid over x402 from MCP ([tx](https://celoscan.io/tx/0x0c3b85edefffd6994bc3497e6bd8d402b71836e69db27a54eaf9a5c1e6ef699f)).
+
+### 5. The household agent, end to end
 ```bash
 node scripts/household.mjs "chicken curry cut"
 ```
@@ -106,9 +113,9 @@ node scripts/household.mjs "chicken curry cut"
 
 ![The household agent's four steps on the site, with proof links](docs/images/household-agent.jpg)
 
-### 5. Run it locally
+### 6. Run it locally
 ```bash
-npm ci && npm test        # 32 tests, no network, no keys, no money
+npm ci && npm test        # 35 tests, no network, no keys, no money
 npm run test:live         # read-only check of the live mainnet API; confirms each settlement on Celo
 npm start                 # the service starts without secrets: gate, free answers, stats and 402 terms work
 ```
@@ -124,6 +131,7 @@ npm start                 # the service starts without secrets: gate, free answe
 | x402 buyer with a spending cap | [`src/agent.mjs#L24`](src/agent.mjs#L24) `createBuyerFetch`, [`#L45`](src/agent.mjs#L45) `setSpendControls` | never more than $0.02 per answer, USDC on Celo only |
 | Agent Vault wallet payments | [`src/vault.mjs#L38`](src/vault.mjs#L38) `pay`, [`src/household.mjs#L18`](src/household.mjs#L18) `nearbyStores` | `payRequest` from the owner's wallet under the agent card's limits |
 | Agent Vault sign-in and owner handoff | [`src/vault-instacart.mjs#L31`](src/vault-instacart.mjs#L31), [`#L43`](src/vault-instacart.mjs#L43) | vault-opened login; captcha and email code handed to the owner |
+| MCP server and agent skill | [`src/mcp.mjs`](src/mcp.mjs), [`SKILL.md`](SKILL.md) | tools `get_price`, `my_agent`; the key stays in a local file, never in the model |
 | ERC-8004 identities | [`scripts/register-8004.mjs`](scripts/register-8004.mjs), [`agent.json`](agent.json), [`household-agent.json`](household-agent.json) | #10088 and #10164 on Celo mainnet |
 | Attribution tag on every transaction we send | [`scripts/chain.mjs`](scripts/chain.mjs) `withAttribution` | tag `celo_bc5d483f879e` (Loops: tag seen, agent wallet on file) |
 
@@ -175,12 +183,13 @@ src/app.mjs            the service: Self gate, quota per human, x402, demo lane,
 src/server.mjs         wires the real Self verifier, Celo facilitator and live prices
 src/agent.mjs          the buyer agent's client: signs with Self Agent ID, pays x402 under a cap
 src/buyer.mjs          CLI for the buyer agent (npm run ask)
+src/mcp.mjs            MCP server: get_price and my_agent for any MCP agent
 src/prices/            live store search (Zepto, Blinkit, Instamart) and the price archive check
 src/vault.mjs          Agent Vault wallet payments
 src/household.mjs      the household agent's Buy lookups (open stores nearby)
 src/vault-instacart.mjs, src/vault-signin.mjs, src/vault-monday.mjs   Agent Vault sign-ins
 scripts/               household agent run, ERC-8004 + Self registration, new users, live check
-test/                  32 tests (real libraries against signature-checking fakes)
+test/                  35 tests (real libraries against signature-checking fakes)
 web/                   the website (Next.js)
 docs/                  join guide, demo script, requirements map, proof
 ```
@@ -188,6 +197,7 @@ docs/                  join guide, demo script, requirements map, proof
 **Docs:**
 - [docs/JOIN.md](docs/JOIN.md): use Bhav with your own agent.
 - [AGENTS.md](AGENTS.md): a one-minute check for judges and AI screeners.
+- [SKILL.md](SKILL.md): the agent skill: when to call Bhav and how to read the answer.
 - [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md): every rule and track requirement, with proof.
 - [docs/DEMO.md](docs/DEMO.md): the demo script.
 - [AI_USAGE.md](AI_USAGE.md): how AI built this, how each part was checked, and where it was wrong.
@@ -197,6 +207,6 @@ docs/                  join guide, demo script, requirements map, proof
 - **Built during the hackathon.** The repository's first commit is from 21 November 2026 and there is no earlier history. The price archive Bhav compares against is data collected by our own tracker from July 2026; all code here is new.
 - **Tracks:** Self Agent ID (Verified Agent Payments), Agent Vault (Online & Onchain Checkouts).
 - **Written with AI assistance:** the code, tests and docs were written by Claude Code (Anthropic) working with Nikhil P N, who chose what to build and did every human step (Self proof, approvals, captchas). Details in [AI_USAGE.md](AI_USAGE.md).
-- **Libraries:** `@selfxyz/agent-sdk`, `@x402/express`, `@x402/fetch`, `@x402/evm`, `@agentvault/playwright`, `@celo/attribution-tags`, `viem`, `express`, `playwright-core`; website: Next.js, React, Tailwind.
+- **Libraries:** `@selfxyz/agent-sdk`, `@x402/express`, `@x402/fetch`, `@x402/evm`, `@agentvault/playwright`, `@celo/attribution-tags`, `@modelcontextprotocol/sdk`, `viem`, `express`, `playwright-core`; website: Next.js, React, Tailwind.
 - **External services:** Self registry (Celo), Celo x402 facilitator, Agent Vault, Buy (usebuy.ai), Zepto, Blinkit and Instamart (public search pages).
 - **License:** MIT. See [LICENSE](LICENSE).

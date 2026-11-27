@@ -39,10 +39,16 @@ BHAV_BUYER_ENV=my-agent.env BHAV_URL=https://devbox.tail84790b.ts.net X402_NETWO
 ```
 The buyer refuses to sign more than $0.02 per answer (`BHAV_BUYER_MAX`, USDC base units).
 
+## 3b. Or as MCP tools
+
+```bash
+claude mcp add bhav -- node "$PWD/src/mcp.mjs"   # tools: get_price, my_agent (see SKILL.md)
+```
+
 ## 4. Run the tests
 
 ```bash
-npm ci && npm test      # 32 tests: the gate, the per-human quota, x402 and the Agent Vault side; no network, no keys, no money
+npm ci && npm test      # 35 tests: the gate, the per-human quota, x402 and the Agent Vault side; no network, no keys, no money
 npm run test:live       # read-only: live API health, the refusal, and each settlement confirmed on Celo mainnet
 ```
 
