@@ -74,8 +74,16 @@ export function createApp(o) {
       const status = r.retryAfterMs ? 429 : 403;
       return res.status(status).json({ error: 'not_a_verified_human_backed_agent', reason: r.error, retryAfterMs: r.retryAfterMs });
     }
-    req.agent = { address: r.agentAddress, agentId: r.agentId.toString(), human: r.nullifier.toString(), agentsOfHuman: r.agentCount.toString() };
+    req.agent = { address: r.agentAddress, agentId: r.agentId.toString(), human: r.nullifier.toString(), agentsOfHuman: r.agentCount.toString(), ...disclosed(r.credentials) };
     next();
+  }
+
+  // Self disclosures we use, and only these two: is the human an adult, and which country issued their ID.
+  // Name, date of birth and ID number are never read into a request, logged or returned.
+  function disclosed(cr) {
+    if (!cr) return { adult: null, country: null };
+    const country = String(cr.nationality || '').replace(/\0/g, '').trim() || null;
+    return { adult: BigInt(cr.olderThan ?? 0) >= 18n, country };
   }
 
   // ── Free quota per human per day (persisted, survives restarts) ─────────────
@@ -134,7 +142,7 @@ export function createApp(o) {
     try {
       const answer = await o.quote(q);
       if (req.bhavFree) spendFree(req.agent.human);
-      const base = { q, answer: short(answer.answer), agent: req.agent.address, agentId: req.agent.agentId, human: req.agent.human.slice(0, 12) };
+      const base = { q, answer: short(answer.answer), agent: req.agent.address, agentId: req.agent.agentId, human: req.agent.human.slice(0, 12), adult: req.agent.adult, country: req.agent.country };
       if (req.bhavFree) log({ kind: 'free', ...base });
       // x402 settles after the handler; read the receipt once the response is out.
       else res.on('finish', () => log({ kind: 'paid', ...base, usdc: Number(PRICE_ATOMIC) / 1e6, settlement: settlementOf(res) }));
@@ -143,7 +151,7 @@ export function createApp(o) {
         billing: req.bhavFree
           ? { kind: 'free', freeLeftToday: FREE_PER_DAY - used(req.agent.human) }
           : { kind: 'paid', price: `$${Number(PRICE_ATOMIC) / 1e6} USDC`, network: X402.caip },
-        agent: { address: req.agent.address, selfAgentId: req.agent.agentId },
+        agent: { address: req.agent.address, selfAgentId: req.agent.agentId, human: { adult: req.agent.adult, country: req.agent.country } },
       });
     } catch (e) {
       res.status(502).json({ error: 'price_lookup_failed', message: String(e.message || e) });
@@ -187,6 +195,8 @@ export function createApp(o) {
         agentAnswers: served.length, free: count('free'), paid: paidEv.length, refused: ev.filter((e) => e.kind === 'refused' && (e.via ?? 'api') === 'api').length,
         refusedFromWebsiteButton: ev.filter((e) => e.kind === 'refused' && e.via === 'browser').length, demo: count('demo'),
         humans: new Set(served.map((e) => e.human)).size, agents: new Set(served.map((e) => e.agent)).size,
+        humansByCountry: Object.fromEntries([...served.reduce((m, e) => (e.country ? m.set(e.country, (m.get(e.country) ?? new Set()).add(e.human)) : m), new Map())].map(([c, h]) => [c, h.size])),
+        adultHumans: new Set(served.filter((e) => e.adult === true).map((e) => e.human)).size,
         usdcEarned: +(paidEv.reduce((s, e) => s + (e.usdc ?? Number(PRICE_ATOMIC) / 1e6), 0)).toFixed(6),
       },
       settlements: paidEv.filter((e) => e.settlement?.tx).slice(-10).reverse().map((e) => ({ ts: e.ts, tx: e.settlement.tx, payer: e.settlement.payer, q: e.q })),
