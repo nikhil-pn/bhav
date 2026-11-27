@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 -16 248 248" role="img" aria-label="Bhav">
+  <title>Bhav</title>
+  <defs>
+    <path id="tag" d="M70 58 H168 Q186 58 186 76 V144 Q186 162 168 162 H70 L30 110 Z"/>
+    <path id="str" d="M60 110 C36 86 34 54 62 36"/>
+  </defs>
+  <g transform="rotate(-14 110 110)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- shadow -->
+    <g opacity="0.22" transform="translate(0 9)" stroke="#000" fill="#000">
+      <use href="#tag" stroke-width="34"/>
+      <use href="#str" fill="none" stroke-width="26"/>
+    </g>
+    <!-- die-cut white border -->
+    <g stroke="#fff" fill="#fff">
+      <use href="#tag" stroke-width="34"/>
+      <use href="#str" fill="none" stroke-width="26"/>
+    </g>
+    <!-- string -->
+    <use href="#str" fill="none" stroke="#16120e" stroke-width="7"/>
+    <!-- tag -->
+    <use href="#tag" fill="#ffc83d" stroke="#16120e" stroke-width="9"/>
+    <path d="M80 76 H124" fill="none" stroke="#fff2c2" stroke-width="7"/>
+    <circle cx="60" cy="110" r="10" fill="#fff" stroke="#16120e" stroke-width="6"/>
+    <!-- rupee -->
+    <path d="M100 84 H150 M100 101 H150 M100 84 H116 C140 84 140 122 116 122 H102 L144 146" fill="none" stroke="#16120e" stroke-width="11"/>
+  </g>
+</svg>

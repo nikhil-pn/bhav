@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 945 290" role="img" aria-label="Bhav">
+  <title>Bhav</title>
+  <svg x="0" y="5" width="280" height="280" viewBox="-14 -16 248 248">
+  <defs>
+    <path id="m-tag" d="M70 58 H168 Q186 58 186 76 V144 Q186 162 168 162 H70 L30 110 Z"/>
+    <path id="m-str" d="M60 110 C36 86 34 54 62 36"/>
+  </defs>
+  <g transform="rotate(-14 110 110)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- shadow -->
+    <g opacity="0.22" transform="translate(0 9)" stroke="#000" fill="#000">
+      <use href="#m-tag" stroke-width="34"/>
+      <use href="#m-str" fill="none" stroke-width="26"/>
+    </g>
+    <!-- die-cut white border -->
+    <g stroke="#fff" fill="#fff">
+      <use href="#m-tag" stroke-width="34"/>
+      <use href="#m-str" fill="none" stroke-width="26"/>
+    </g>
+    <!-- string -->
+    <use href="#m-str" fill="none" stroke="#16120e" stroke-width="7"/>
+    <!-- tag -->
+    <use href="#m-tag" fill="#ffc83d" stroke="#16120e" stroke-width="9"/>
+    <path d="M80 76 H124" fill="none" stroke="#fff2c2" stroke-width="7"/>
+    <circle cx="60" cy="110" r="10" fill="#fff" stroke="#16120e" stroke-width="6"/>
+    <!-- rupee -->
+    <path d="M100 84 H150 M100 101 H150 M100 84 H116 C140 84 140 122 116 122 H102 L144 146" fill="none" stroke="#16120e" stroke-width="11"/>
+  </g>
+</svg>
+  <svg x="262" y="10" width="680" height="276" viewBox="-40 -48 660 268">
+  <defs>
+    <g id="w-glyphs">
+      <g transform="rotate(-4 70 80)"><path d="M20 0 V160"/><circle cx="70" cy="110" r="50"/></g>
+      <g transform="rotate(3 225 80)"><path d="M175 0 V160 M175 112 A50 50 0 0 1 275 112 V160"/></g>
+      <g transform="rotate(-3 380 110)"><circle cx="365" cy="110" r="50"/><path d="M415 60 V160"/></g>
+      <g transform="rotate(4 510 110)"><path d="M462 60 L511 160 L560 60"/></g>
+    </g>
+    <g id="w-bowls">
+      <g transform="rotate(-4 70 80)"><circle cx="70" cy="110" r="50"/></g>
+      <g transform="rotate(-3 380 110)"><circle cx="365" cy="110" r="50"/></g>
+    </g>
+  </defs>
+  <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <g opacity="0.22" transform="translate(0 9)">
+      <use href="#w-glyphs" stroke="#000" stroke-width="76"/>
+      <use href="#w-bowls" fill="#000"/>
+    </g>
+    <use href="#w-glyphs" stroke="#fff" stroke-width="76"/>
+    <use href="#w-bowls" fill="#fff"/>
+    <use href="#w-glyphs" stroke="#16120e" stroke-width="50"/>
+    <use href="#w-glyphs" stroke="#ff7a1a" stroke-width="32"/>
+  </g>
+</svg>
+</svg>
