@@ -10,7 +10,7 @@ Bhav sells live grocery prices to AI agents, and only to agents that have a real
 
 1. **It knows the price.** Live prices from Zepto, Blinkit and Instamart (Kochi), with a deal check against our price history, sold per request over [x402](https://x402.celo.org) on Celo mainnet. ✅ live
 2. **One fair quota per human.** Every caller must sign its request with a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each **human** (not each agent) gets 3 free answers a day, then pays $0.01 USDC per answer. An agent with no human behind it is refused. ✅ live
-3. **It acts for the household through [Agent Vault](https://agentvault.io).** The household agent pays for Buy services from the owner's Agent Vault wallet on Celo, under an agent card with hard limits ($0.02 per payment, $0.10 a week): a cheap call goes through, a $0.04 one is refused and the card pauses itself. It signs in to amazon.in with the owner's saved login without ever seeing the password; Amazon's one-time code goes to the owner's phone. ✅ the limit refusal is proven on mainnet ([screenshot](docs/proof/agent-vault-cap-refusal.png)) · ⏳ the first wallet payment to settle (the seller failed after our first $0.005 call; no tx hash yet) · ⏳ amazon.in sign-in (code written, not run yet: the owner has not saved the login)
+3. **It acts for the household through [Agent Vault](https://agentvault.io).** The household agent pays for Buy services from the owner's Agent Vault wallet on Celo, under an agent card with hard limits ($0.02 per payment, $0.10 a week): a cheap call goes through, a $0.04 one is refused and the card pauses itself. It signs in to amazon.in with the owner's saved login without ever seeing the password; Amazon's one-time code goes to the owner's phone. ✅ a $0.005 payment from the Agent Vault wallet settled on Celo ([tx](https://celoscan.io/tx/0x0bd4abc98ef89a65f0f6dee4e2d075d887a393204ea64b3ec5b45a805167cef4)) · ✅ the limit refusal ([screenshot](docs/proof/agent-vault-cap-refusal.png)) · ⏳ a store sign-in (amazon.in answers the proxy with its automated-access block page; next: instacart.com, a verified Agent Vault recipe)
 
 ## Try it
 | Who | How |
@@ -20,13 +20,13 @@ Bhav sells live grocery prices to AI agents, and only to agents that have a real
 | Anyone | live counters and settlement tx hashes: `curl -s https://devbox.tail84790b.ts.net/v1/stats` |
 
 ## The household agent, end to end (in progress)
-Steps 1 and 4 are proven on mainnet; steps 2 and 3 are written and tested against fakes, not yet proven live.
+Steps 1, 3 and 4 are proven on mainnet; step 2 (store sign-in) is not yet: see below.
 ```bash
 node scripts/household.mjs "chicken curry cut"
 ```
 1. **Self Agent ID**: it signs its request (Self Agent ID #212, a real human behind it) and asks Bhav for the cheapest price: free answers first, then $0.01 USDC over x402.
-2. **Agent Vault sign-in**: it signs in to amazon.in with a login the owner saved in Agent Vault. It holds only tokens; Agent Vault's proxy browser types the real email and password, and the one-time code is handed to the owner's phone (`src/vault-signin.mjs`).
-3. **Agent Vault wallet**: it pays $0.005 on [Buy](https://usebuy.ai) for recent deal posts about the item, from the owner's Agent Vault wallet on Celo mainnet (`src/household.mjs`, `src/vault.mjs`).
+2. **Agent Vault sign-in**: it signs in to a store with a login kept in Agent Vault. It holds only tokens; Agent Vault's proxy browser types the real values, and any one-time code is handed to the owner's phone. amazon.in (`src/vault-signin.mjs`) reaches the password step and then gets Amazon's automated-access block page; instacart.com (`src/vault-instacart.mjs`, a verified Agent Vault recipe) is next.
+3. **Agent Vault wallet**: it pays $0.005 on [Buy](https://usebuy.ai) for recent Reddit posts about the item's price, from the owner's Agent Vault wallet on Celo mainnet (`src/household.mjs`, `src/vault.mjs`). [First settled payment](https://celoscan.io/tx/0x0bd4abc98ef89a65f0f6dee4e2d075d887a393204ea64b3ec5b45a805167cef4): 0.005 USDC from the Agent Vault wallet to Buy.
 4. **Agent Vault limit**: it tries a $0.04 Buy service (nearby supermarkets). The agent card allows $0.02 per payment, so Agent Vault refuses it (`limit_reached`, nothing paid) and pauses the card until the owner resumes it. [Screenshot of the refusal](docs/proof/agent-vault-cap-refusal.png).
 
 ## Tests
@@ -48,7 +48,7 @@ the per-payment cap refusing and pausing the card, an empty wallet, a key with n
 | Track | Sponsor | What we show |
 |---|---|---|
 | Self Agent ID: Verified Agent Payments | Self | Agent ID decides who is served, how much is free, and who pays, with payments over x402 ✅ |
-| Agent Vault: Online & Onchain Checkouts | Self | the agent card's cap refuses a payment ✅; a settled wallet payment ⏳; signing in to amazon.in without seeing the password ⏳ |
+| Agent Vault: Online & Onchain Checkouts | Self | the agent card's cap refuses a payment ✅; a wallet payment settled on Celo ✅; a store sign-in without seeing secrets ⏳ |
 
 Agent wallet: `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F` · attribution tag: `celo_bc5d483f879e`.
 
