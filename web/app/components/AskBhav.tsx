@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { API_BASE, FREE_PER_DAY, PRICE_USDC } from "@/lib/bhav";
 import { type DemoAnswer, type Offer, perLabel, rupee, storeName, verdictLabel } from "@/lib/api";
+import { ArrowOut } from "./Stickers";
 
 const CHIPS = ["chicken curry cut", "eggs 30", "milk 1 litre", "onion 1kg"];
 
@@ -91,7 +92,7 @@ export default function AskBhav() {
           e.preventDefault();
           ask(q);
         }}
-        className="flex gap-2 rounded-2xl border border-line bg-raised p-2 focus-within:border-lime"
+        className="flex gap-2 rounded-2xl border-[2.5px] border-ink bg-white p-2 shadow-[0_5px_0_var(--color-ink)] transition-shadow focus-within:shadow-[0_5px_0_var(--color-saffron)]"
       >
         <label htmlFor="ask-q" className="sr-only">
           What do you want to buy?
@@ -104,12 +105,12 @@ export default function AskBhav() {
           placeholder="e.g. 1kg chicken curry cut"
           autoComplete="off"
           enterKeyHint="search"
-          className="min-w-0 flex-1 bg-transparent px-3 text-base text-fg placeholder:text-muted/70 focus:outline-none"
+          className="min-w-0 flex-1 bg-transparent px-2 text-base text-ink placeholder:text-muted/70 focus:outline-none sm:px-3 sm:text-lg"
         />
         <button
           type="submit"
           disabled={loading || !q.trim()}
-          className="tap shrink-0 rounded-xl bg-lime px-5 py-3 font-semibold text-ink transition-opacity disabled:opacity-50"
+          className="tap shrink-0 rounded-xl border-2 border-ink bg-saffron px-4 py-3 font-bold text-ink transition-colors hover:bg-turmeric disabled:opacity-50 disabled:hover:bg-saffron sm:px-6"
         >
           {loading ? "Asking…" : "Ask Bhav"}
         </button>
@@ -122,7 +123,7 @@ export default function AskBhav() {
             type="button"
             disabled={loading}
             onClick={() => ask(c)}
-            className="tap rounded-full border border-line px-3 py-1.5 text-sm text-fg/85 transition-colors hover:border-lime hover:text-lime disabled:opacity-50"
+            className="tap rounded-full border-2 border-ink bg-paper px-3 py-1.5 text-sm font-semibold text-ink transition-colors hover:bg-turmeric disabled:opacity-50"
           >
             {c}
           </button>
@@ -143,7 +144,7 @@ export default function AskBhav() {
             ) : (
               <>
                 Still busy.{" "}
-                <button type="button" onClick={() => ask(st.q)} className="font-semibold text-lime underline underline-offset-4">
+                <button type="button" onClick={() => ask(st.q)} className="font-bold text-saffron-deep underline underline-offset-4">
                   Try “{st.q}” again
                 </button>
               </>
@@ -153,7 +154,7 @@ export default function AskBhav() {
         {st.s === "error" && (
           <Notice tone="error">
             {st.msg}{" "}
-            <button type="button" onClick={() => ask(st.q)} className="font-semibold text-lime underline underline-offset-4">
+            <button type="button" onClick={() => ask(st.q)} className="font-bold text-saffron-deep underline underline-offset-4">
               Retry
             </button>
           </Notice>
@@ -162,7 +163,7 @@ export default function AskBhav() {
       </div>
 
       <p className="mt-4 text-xs leading-relaxed text-muted">
-        Website demo: free, and the slow lane. Agents get it at <code className="text-fg/80">/v1/quote</code> with a Self
+        Website demo: free, and the slow lane. Agents get it at <code className="font-semibold text-ink">/v1/quote</code> with a Self
         Agent ID: {FREE_PER_DAY} free a day per human, then {PRICE_USDC} USDC over x402.
       </p>
     </div>
@@ -172,8 +173,8 @@ export default function AskBhav() {
 function Notice({ tone, children }: { tone: "wait" | "error"; children: React.ReactNode }) {
   return (
     <div
-      className={`rounded-2xl border p-4 text-sm leading-relaxed ${
-        tone === "wait" ? "border-mustard/50 bg-mustard/10" : "border-line bg-card"
+      className={`rounded-2xl border-2 p-4 text-sm leading-relaxed ${
+        tone === "wait" ? "border-ink bg-turmeric/40" : "border-ink bg-white"
       }`}
     >
       {children}
@@ -183,16 +184,16 @@ function Notice({ tone, children }: { tone: "wait" | "error"; children: React.Re
 
 function Loading({ q, secs }: { q: string; secs: number }) {
   return (
-    <div className="card p-5">
+    <div className="rounded-2xl border-2 border-ink bg-white p-5">
       <p className="text-sm">
         Checking <b>Zepto</b>, <b>Blinkit</b> and <b>Instamart</b> for <b>“{q}”</b>…
       </p>
       <div className="mt-4 grid grid-cols-3 gap-2" aria-hidden>
         {["Zepto", "Blinkit", "Instamart"].map((s, i) => (
-          <div key={s} className="overflow-hidden rounded-lg border border-line bg-raised px-3 py-2 font-mono text-xs text-muted">
+          <div key={s} className="overflow-hidden rounded-lg border-2 border-ink/15 bg-paper px-2 py-2 font-mono text-[11px] text-muted sm:px-3 sm:text-xs">
             {s}
-            <div className="mt-2 h-1 overflow-hidden rounded bg-line">
-              <div className="h-full w-1/3 animate-[scan_1.4s_ease-in-out_infinite] rounded bg-lime" style={{ animationDelay: `${i * 0.2}s` }} />
+            <div className="mt-2 h-1.5 overflow-hidden rounded bg-line">
+              <div className="scan h-full w-1/3 rounded bg-saffron" style={{ animationDelay: `${i * 0.2}s` }} />
             </div>
           </div>
         ))}
@@ -208,9 +209,9 @@ function Chip({ o }: { o: Offer }) {
   const v = verdictLabel(o);
   const cls =
     v.tone === "deal"
-      ? "bg-lime-deep text-ink"
+      ? "bg-leaf text-white"
       : v.tone === "pricier"
-        ? "bg-mustard/80 text-ink"
+        ? "bg-turmeric text-ink"
         : v.tone === "normal"
           ? "bg-ink/10 text-ink"
           : "border border-dashed border-ink/35 text-ink/60";
@@ -227,11 +228,9 @@ function Receipt({ q, d, at }: { q: string; d: DemoAnswer; at: number }) {
   const others = d.offers.filter((o) => !best || o.url !== best.url || o.name !== best.name).slice(0, 5);
   const errs = Object.entries(d.errors ?? {});
   return (
-    <figure className="receipt w-full rounded-t-xl p-5 font-mono text-[12.5px] shadow-2xl sm:p-6">
+    <figure className="receipt w-full rounded-t-xl border-x-2 border-t-2 border-ink p-5 font-mono text-[12.5px] sm:p-6">
       <div className="flex items-baseline justify-between gap-3">
-        <span className="font-sans text-2xl">
-          <span className="serif-i">bhav</span>
-        </span>
+        <span className="display text-2xl text-saffron-deep">bhav</span>
         <span className="text-[11px] text-ink/60">Kochi · {timeIST(at)} IST</span>
       </div>
       <p className="mt-1 text-[11px] uppercase tracking-widest text-ink/60">you asked: {q}</p>
@@ -261,7 +260,7 @@ function Receipt({ q, d, at }: { q: string; d: DemoAnswer; at: number }) {
           )}
           {best.url && (
             <a href={best.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block font-sans text-[13px] font-semibold underline underline-offset-4">
-              Open in {storeName(best.platform)} ↗
+              Open in {storeName(best.platform)} <ArrowOut className="inline size-3.5" />
             </a>
           )}
         </div>

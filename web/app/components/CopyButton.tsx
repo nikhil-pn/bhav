@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Check, CopyIcon } from "./Stickers";
 
 async function copyText(text: string) {
   try {
@@ -26,11 +27,13 @@ export default function CopyButton({
   label = "Copy",
   className = "",
   "aria-label": ariaLabel,
+  tone = "light",
 }: {
   text: string;
   label?: string;
   className?: string;
   "aria-label"?: string;
+  tone?: "light" | "dark";
 }) {
   const [state, setState] = useState<"idle" | "ok" | "err">("idle");
   return (
@@ -41,11 +44,16 @@ export default function CopyButton({
         setState(ok ? "ok" : "err");
         setTimeout(() => setState("idle"), 1600);
       }}
-      className={`tap shrink-0 rounded-lg border border-line bg-raised px-3 py-1.5 text-xs font-semibold text-fg transition-colors active:bg-line ${className}`}
+      className={`tap inline-flex shrink-0 items-center gap-1.5 rounded-lg border-2 px-2.5 py-1.5 text-xs font-bold transition-colors ${
+        tone === "dark"
+          ? "border-on-mandi/40 bg-white/5 text-on-mandi hover:border-turmeric hover:text-turmeric"
+          : "border-ink bg-white text-ink shadow-[0_2px_0_var(--color-ink)] hover:bg-turmeric"
+      } ${className}`}
       aria-label={state === "idle" ? ariaLabel : undefined}
       aria-live="polite"
     >
-      {state === "ok" ? "Copied ✓" : state === "err" ? "Copy failed" : label}
+      {state === "ok" ? <Check className="size-3.5" /> : <CopyIcon className="size-3.5" />}
+      {state === "ok" ? "Copied" : state === "err" ? "Copy failed" : label}
     </button>
   );
 }
