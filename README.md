@@ -8,7 +8,7 @@ Celo hackathon *Agents Open for Business* ([loops.house](https://www.loops.house
 
 Bhav sells live grocery prices to AI agents, and only to agents that have a real human behind them.
 
-1. **It knows the price.** Live prices from Zepto, Blinkit and Instamart (Kochi), with a deal check against our price history, sold per request over [x402](https://x402.celo.org) on Celo mainnet. ✅ live
+1. **It knows the price.** Live prices from Zepto, Blinkit and Instamart (Kochi), compared with our own price archive (July–November 2026; items it never tracked say "no history yet"), sold per request over [x402](https://x402.celo.org) on Celo mainnet. ✅ live
 2. **One fair quota per human.** Every caller must sign its request with a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each **human** (not each agent) gets 3 free answers a day, then pays $0.01 USDC per answer. An agent with no human behind it is refused. Every answer also says what the human chose to disclose through Self, only whether they are an adult and their ID's country (e.g. `{"adult":true,"country":"IND"}`); `/v1/stats` counts humans by country. ✅ live
 3. **It acts for the household through [Agent Vault](https://agentvault.io).** The household agent pays for Buy services from the owner's Agent Vault wallet on Celo, under an agent card with hard limits ($0.02 per payment, $0.10 a week): a cheap call goes through, a $0.04 one is refused and the card pauses itself. It signs in to instacart.com with a login Agent Vault opened for it, whose password nobody has ever seen; a captcha or email code goes to the owner's phone. ✅ a $0.005 payment from the Agent Vault wallet settled on Celo ([tx](https://celoscan.io/tx/0x0bd4abc98ef89a65f0f6dee4e2d075d887a393204ea64b3ec5b45a805167cef4)) · ✅ the limit refusal ([screenshot](docs/proof/agent-vault-cap-refusal.png)) · ✅ signed in to instacart.com through Agent Vault with a login Agent Vault opened for it (the owner only solved Instacart's captcha on the live page): [log](docs/proof/instacart-signin-2026-11-28.log), [screenshot](docs/proof/instacart-signed-in-via-agent-vault-live-page.png)
 
@@ -20,14 +20,14 @@ Bhav sells live grocery prices to AI agents, and only to agents that have a real
 | Anyone | live counters and settlement tx hashes: `curl -s https://devbox.tail84790b.ts.net/v1/stats` |
 
 ## The household agent, end to end
-All four steps have run for real on 28 Nov 2026 (links below).
+Each step has run for real on Celo mainnet (links below): the x402 payment on 22 Nov, the Agent Vault steps on 28 Nov. Step 1 pays with the household agent's own key, capped at $0.02 per answer in code (`src/agent.mjs`); steps 2–4 hold no secret at all.
 ```bash
 node scripts/household.mjs "chicken curry cut"
 ```
 1. **Self Agent ID**: it signs its request (Self Agent ID #212, a real human behind it) and asks Bhav for the cheapest price: free answers first, then $0.01 USDC over x402.
-2. **Agent Vault sign-in**: it signs in to a store with a login kept in Agent Vault. It holds only tokens; Agent Vault's proxy browser types the real values, and any one-time code is handed to the owner's phone. It signs in to **instacart.com** (`src/vault-instacart.mjs`): the login was opened by Agent Vault after the owner approved it, with a password minted in the vault that nobody has seen; Instacart's reCAPTCHA was handed to the owner's phone and solved there. [Log](docs/proof/instacart-signin-2026-11-28.log) · [owner's live view](docs/proof/instacart-signed-in-via-agent-vault-live-page.png). amazon.in (`src/vault-signin.mjs`) was tried first: the proxy types the email and password, then Amazon serves its automated-access block page, so we moved on rather than fight a bot wall.
+2. **Agent Vault sign-in**: it signs in to a store with a login kept in Agent Vault. It holds only tokens; Agent Vault's proxy browser types the real values, and any one-time code is handed to the owner's phone. It signs in to **instacart.com** (`src/vault-instacart.mjs`), the one grocery site in Agent Vault's registry with a verified sign-in. Instacart serves the US, not Kochi, so this step shows the capability (a store account the agent can use without ever seeing its secrets); Indian q-commerce sites are not in Agent Vault's registry yet. the login was opened by Agent Vault after the owner approved it, with a password minted in the vault that nobody has seen; Instacart's reCAPTCHA was handed to the owner's phone and solved there. [Log](docs/proof/instacart-signin-2026-11-28.log) · [owner's live view](docs/proof/instacart-signed-in-via-agent-vault-live-page.png). amazon.in (`src/vault-signin.mjs`) was tried first: the proxy types the email and password, then Amazon serves its automated-access block page, so we moved on rather than fight a bot wall.
 3. **Agent Vault wallet**: it pays $0.005 on [Buy](https://usebuy.ai) for recent Reddit posts about the item's price, from the owner's Agent Vault wallet on Celo mainnet (`src/household.mjs`, `src/vault.mjs`). [First settled payment](https://celoscan.io/tx/0x0bd4abc98ef89a65f0f6dee4e2d075d887a393204ea64b3ec5b45a805167cef4): 0.005 USDC from the Agent Vault wallet to Buy.
-4. **Agent Vault limit**: it tries a $0.04 Buy service (nearby supermarkets). The agent card allows $0.02 per payment, so Agent Vault refuses it (`limit_reached`, nothing paid) and pauses the card until the owner resumes it. [Screenshot of the refusal](docs/proof/agent-vault-cap-refusal.png).
+4. **Agent Vault limit**: it tries a $0.04 Buy service (Google Places search for nearby supermarkets; Agent Vault labels Buy's Google routes "Buy (Google Cloud VMs)"). The agent card allows $0.02 per payment, so Agent Vault refuses it (`limit_reached`, nothing paid) and pauses the card until the owner resumes it. [Screenshot of the refusal](docs/proof/agent-vault-cap-refusal.png).
 
 ## Tests
 ```bash
@@ -54,7 +54,7 @@ a page released unsolved stops the flow. CI runs it all on every push.
 
 Agent wallet: `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F` · attribution tag: `celo_bc5d483f879e`.
 
-Every agent is registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004), and every transaction Bhav itself sends carries our [attribution tag](https://github.com/celo-org/attribution-tags).
+Bhav is registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004) (agent #10088); the household agent's card is ready (`household-agent.json`) and it is registered once it holds gas. Every transaction Bhav itself sends carries our [attribution tag](https://github.com/celo-org/attribution-tags).
 
 ## Proof (Celo mainnet unless noted)
 | What | Link |
