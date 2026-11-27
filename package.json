@@ -8,6 +8,12 @@
   "engines": {
     "node": ">=22"
   },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
+    "test:live": "node scripts/smoke.mjs",
+    "buyer": "node src/buyer.mjs"
+  },
   "dependencies": {
     "@celo/attribution-tags": "^0.5.0",
     "@selfxyz/agent-sdk": "^0.3.1",
