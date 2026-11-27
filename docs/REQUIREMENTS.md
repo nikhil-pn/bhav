@@ -26,6 +26,9 @@ Judging: integration 30%, innovation and value 30%, named user and real job 25%,
 Judging: same as above.
 | Requirement | Status | Proof |
 |---|---|---|
-| The agent signs in on a regular website through Agent Vault (meets the requirement) | ⏳ | |
-| Optional: a real, low-value checkout | ⏳ | |
-| Pays onchain with x402 | ✅ | [settlement tx](https://celoscan.io/tx/0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090) |
+| The agent signs in on a regular website through Agent Vault (meets the requirement) | 🟡 | `src/vault-signin.mjs` (amazon.in, OTP handed to the owner); waiting for the owner to save the login |
+| Optional: a real, low-value checkout | — | not planned |
+| A spending limit or rule in Agent Vault, and the demo shows the agent hitting it (livestream, 24 Nov) | ✅ | agent card $0.02/payment, $0.10/week; $0.04 payment refused `limit_reached`, card auto-paused: [screenshot](proof/agent-vault-cap-refusal.png) |
+| The agent never sees the card number or password | ✅ | agent holds tokens only; Agent Vault pays and signs in (`src/vault.mjs`, `src/vault-signin.mjs`); test checks no secret crosses `pay()` |
+| A public post by a team member with demo clip + repo link (livestream, 24 Nov) | ⏳ | owner posts after the demo video |
+| Pays onchain with x402 | ✅ | Agent Vault wallet pays Buy (x402, Celo mainnet) from `src/household.mjs`; and [settlement tx](https://celoscan.io/tx/0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090) |
