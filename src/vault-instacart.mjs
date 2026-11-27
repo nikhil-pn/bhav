@@ -46,11 +46,27 @@ async function emailCodeFlow(page, login, url, log) {
   await page.fill(EMAIL, login.tokens.email);           // a token; the proxy types the real address
   await page.click('button:has-text("Continue")');      // the page also has "Log in": press Continue
   log('email_submitted');
-  await page.waitForSelector(CODE, { state: 'visible', timeout: 30000 });
-  log('code_sent_to_owner');
-  const h = await page.requestChallengeHandoff({ reason: 'owner_code' });
-  log('owner_typed_code', { outcome: h.outcome, seconds: Math.round(h.durationMs / 1000) });
-  return h;
+  // Instacart may put a reCAPTCHA in front of the code. A human check is the owner's: hand the live
+  // page to their phone (Agent Vault streams it), they solve it, the agent carries on.
+  let h = null;
+  for (let i = 0; i < 12; i++) {
+    if (await page.locator(CODE).count().catch(() => 0)) break;
+    const d = await page.detectChallenge({ ownerCode: true }).catch(() => ({ detected: false }));
+    if (d.detected && !d.ambiguousOnly && (d.types || [d.type]).includes('captcha')) {
+      log('captcha_to_owner');
+      h = await page.requestChallengeHandoff();
+      log('owner_finished_captcha', { outcome: h.outcome, seconds: Math.round(h.durationMs / 1000) });
+      if (!['solved', 'completed'].includes(h.outcome)) return h;
+    }
+    await sleep(5000);
+  }
+  // The owner may have typed the code during the same handoff; if a code box is still showing, hand it over.
+  if (await page.locator(CODE).count().catch(() => 0)) {
+    log('code_sent_to_owner');
+    h = await page.requestChallengeHandoff({ reason: 'owner_code' });
+    log('owner_typed_code', { outcome: h.outcome, seconds: Math.round(h.durationMs / 1000) });
+  }
+  return h ?? { outcome: 'completed', durationMs: 0 };
 }
 
 async function isSignedIn(page) {
