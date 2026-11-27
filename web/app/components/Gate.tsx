@@ -61,7 +61,7 @@ export default function Gate() {
         {refused && (
           <div
             aria-hidden
-            className="stamp-in pointer-events-none absolute right-3 top-12 rounded-lg border-[3px] border-[#ff8f7d] px-3 py-1 font-mono text-lg font-black tracking-widest text-[#ff8f7d] md:right-6 md:text-2xl"
+            className="stamp-in pointer-events-none absolute bottom-4 right-4 rounded-lg border-[3px] border-[#ff8f7d] px-3 py-1 font-mono text-lg font-black tracking-widest text-[#ff8f7d] md:right-6 md:text-2xl"
           >
             REFUSED
           </div>

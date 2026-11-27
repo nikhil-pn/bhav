@@ -104,7 +104,7 @@ export default function RunnerTrack({ className = "" }: { className?: string }) 
           <BotRunner />
         </div>
       </div>
-      <div className="lane" style={{ ["--dur" as string]: "17s", ["--delay" as string]: "-2s", ["--x" as string]: "38%" }}>
+      <div className="lane" style={{ ["--dur" as string]: "17s", ["--delay" as string]: "-2s", ["--x" as string]: "40%" }}>
         <div className="absolute bottom-3 left-0 h-[5rem] md:h-[5.8rem]">
           <OnionRunner say="what's the bhav?" />
         </div>
