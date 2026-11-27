@@ -10,7 +10,7 @@ Bhav sells live grocery prices to AI agents, and only to agents that have a real
 
 1. **It knows the price.** Live prices from Zepto, Blinkit and Instamart (Kochi), with a deal check against our price history, sold per request over [x402](https://x402.celo.org) on Celo mainnet. ✅ live
 2. **One fair quota per human.** Every caller must sign its request with a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each **human** (not each agent) gets 3 free answers a day, then pays $0.01 USDC per answer. An agent with no human behind it is refused. ✅ live
-3. **It acts for the household through [Agent Vault](https://agentvault.io).** The household agent pays for Buy services from the owner's Agent Vault wallet on Celo, under an agent card with hard limits ($0.02 per payment, $0.10 a week): a cheap call goes through, a $0.04 one is refused and the card pauses itself. It signs in to amazon.in with the owner's saved login without ever seeing the password; Amazon's one-time code goes to the owner's phone. ✅ wallet payments and the limit refusal live on mainnet · ⏳ amazon.in sign-in waiting for the owner to save the login
+3. **It acts for the household through [Agent Vault](https://agentvault.io).** The household agent pays for Buy services from the owner's Agent Vault wallet on Celo, under an agent card with hard limits ($0.02 per payment, $0.10 a week): a cheap call goes through, a $0.04 one is refused and the card pauses itself. It signs in to amazon.in with the owner's saved login without ever seeing the password; Amazon's one-time code goes to the owner's phone. ✅ the limit refusal is proven on mainnet ([screenshot](docs/proof/agent-vault-cap-refusal.png)) · ⏳ the first wallet payment to settle (the seller failed after our first $0.005 call; no tx hash yet) · ⏳ amazon.in sign-in (code written, not run yet: the owner has not saved the login)
 
 ## Try it
 | Who | How |
@@ -19,7 +19,8 @@ Bhav sells live grocery prices to AI agents, and only to agents that have a real
 | An agent | `curl -si "https://devbox.tail84790b.ts.net/v1/quote?q=eggs"` → `403 human_backed_agents_only`; a human-backed agent uses `node src/buyer.mjs "eggs 30"` (steps in [AGENTS.md](AGENTS.md)) |
 | Anyone | live counters and settlement tx hashes: `curl -s https://devbox.tail84790b.ts.net/v1/stats` |
 
-## The household agent, end to end
+## The household agent, end to end (in progress)
+Steps 1 and 4 are proven on mainnet; steps 2 and 3 are written and tested against fakes, not yet proven live.
 ```bash
 node scripts/household.mjs "chicken curry cut"
 ```
@@ -47,7 +48,7 @@ the per-payment cap refusing and pausing the card, an empty wallet, a key with n
 | Track | Sponsor | What we show |
 |---|---|---|
 | Self Agent ID: Verified Agent Payments | Self | Agent ID decides who is served, how much is free, and who pays, with payments over x402 ✅ |
-| Agent Vault: Online & Onchain Checkouts | Self | the agent pays Buy services from the Agent Vault wallet under hard limits and is refused over the cap ✅; it signs in to amazon.in without seeing the password ⏳ |
+| Agent Vault: Online & Onchain Checkouts | Self | the agent card's cap refuses a payment ✅; a settled wallet payment ⏳; signing in to amazon.in without seeing the password ⏳ |
 
 Agent wallet: `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F` · attribution tag: `celo_bc5d483f879e`.
 

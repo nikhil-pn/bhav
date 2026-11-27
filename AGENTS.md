@@ -42,7 +42,7 @@ The buyer refuses to sign more than $0.02 per answer (`BHAV_BUYER_MAX`, USDC bas
 ## 4. Run the tests
 
 ```bash
-npm ci && npm test      # 17 end-to-end tests of the gate, the per-human quota and x402; no network, no keys, no money
+npm ci && npm test      # 24 tests: the gate, the per-human quota, x402 and the Agent Vault side; no network, no keys, no money
 npm run test:live       # read-only: live API health, the refusal, and each settlement confirmed on Celo mainnet
 ```
 
@@ -73,4 +73,4 @@ npm run test:live       # read-only: live API health, the refusal, and each sett
 - Self Agent ID proves a **unique human** behind an agent, not that the human is trustworthy. Aadhaar proofs are weaker than passport proofs (Self's own note).
 - Payments between our own two agents are a demo of the mechanism, not traction; real use is counted only from wallets outside the team.
 - The API runs on one home server (devbox) because the price lookups need a real browser in India. If it is down, the website says so.
-- Agent Vault (store sign-in for cart filling) is being built.
+- Agent Vault: the agent card's spending cap is proven on mainnet; a settled wallet payment and the amazon.in sign-in are still to come.
