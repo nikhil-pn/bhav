@@ -42,7 +42,7 @@ The buyer refuses to sign more than $0.02 per answer (`BHAV_BUYER_MAX`, USDC bas
 ## 4. Run the tests
 
 ```bash
-npm ci && npm test      # 24 tests: the gate, the per-human quota, x402 and the Agent Vault side; no network, no keys, no money
+npm ci && npm test      # 29 tests: the gate, the per-human quota, x402 and the Agent Vault side; no network, no keys, no money
 npm run test:live       # read-only: live API health, the refusal, and each settlement confirmed on Celo mainnet
 ```
 

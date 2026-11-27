@@ -31,7 +31,7 @@ node scripts/household.mjs "chicken curry cut"
 
 ## Tests
 ```bash
-npm ci && npm test        # 24 tests, no network, no keys, no money
+npm ci && npm test        # 29 tests, no network, no keys, no money
 npm run test:live         # read-only check of the live mainnet API; confirms each settlement on Celo
 ```
 `npm test` runs the real service (`src/app.mjs`), the real buyer agent (`src/agent.mjs`), the real Self Agent ID verifier
@@ -42,7 +42,9 @@ replayed and re-targeted signatures; 3 free answers then a $0.01 x402 payment wi
 does not pay; free quota shared by all agents of one human; the buyer's spending cap; a forged payment; quota reset at midnight
 and across restarts; failed lookups never using up a free answer; the website lane; stats. The Agent Vault side (`test/vault.test.mjs`)
 runs against a fake Agent Vault that answers like the live one: a cheap Buy payment and its answer, the owner's first-seller approval,
-the per-payment cap refusing and pausing the card, an empty wallet, a key with no wallet, and no secret ever crossing `pay()`. CI runs it on every push.
+the per-payment cap refusing and pausing the card, an empty wallet, a key with no wallet, and no secret ever crossing `pay()`.
+`test/instacart.test.mjs` replays the Instacart sign-in: captcha and email code go to the owner, the agent fills only the email token,
+a page released unsolved stops the flow. CI runs it all on every push.
 
 ## Tracks
 | Track | Sponsor | What we show |
