@@ -16,11 +16,13 @@
     "agent:new": "node scripts/new-agent.mjs",
     "agent:link": "BHAV_NETWORK=mainnet BHAV_ENV_FILE=my-agent.env node scripts/self-register.mjs link",
     "agent:status": "BHAV_NETWORK=mainnet BHAV_ENV_FILE=my-agent.env node scripts/self-register.mjs status",
-    "ask": "BHAV_BUYER_ENV=my-agent.env X402_NETWORK=mainnet node src/buyer.mjs"
+    "ask": "BHAV_BUYER_ENV=my-agent.env X402_NETWORK=mainnet node src/buyer.mjs",
+    "mcp": "node src/mcp.mjs"
   },
   "dependencies": {
     "@agentvault/playwright": "https://app.agentvault.io/sdk/agentvault-playwright.tgz",
     "@celo/attribution-tags": "^0.5.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "@selfxyz/agent-sdk": "^0.3.1",
     "@x402/core": "^2.32.0",
     "@x402/evm": "^2.32.0",
@@ -28,6 +30,7 @@
     "@x402/fetch": "^2.32.0",
     "express": "^5.3.0",
     "playwright-core": "^1.61.1",
-    "viem": "^2.58.4"
+    "viem": "^2.58.4",
+    "zod": "^4.6.7"
   }
 }
