@@ -40,6 +40,14 @@ export const BUYER = {
 };
 export const FIRST_X402_TX = "0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090";
 
+/** Agent Vault (Self Labs): the household agent's wallet and card, on Celo mainnet. */
+export const VAULT = {
+  wallet: "0x2e55fee82b78ad14467603efd389dfe9dd3c571e",
+  firstBuyPaymentTx: "0x0bd4abc98ef89a65f0f6dee4e2d075d887a393204ea64b3ec5b45a805167cef4",
+  capRefusalProof: `${REPO_URL}/blob/main/docs/proof/agent-vault-cap-refusal.png`,
+  limits: { perPayment: "$0.02", weekly: "$0.10", monthly: "$0.20" },
+} as const;
+
 export const HACKATHON = {
   name: "Agents Open for Business",
   host: "Celo",
