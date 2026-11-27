@@ -40,7 +40,7 @@ export async function requestInstacartLogin(email, { log = () => {}, timeoutMs =
 }
 
 /** Email → Continue → code (owner, via handoff). Shared by sign-up and sign-in: Instacart uses one flow. */
-async function emailCodeFlow(page, login, url, log) {
+export async function emailCodeFlow(page, login, url, log = () => {}, { pollMs = 5000 } = {}) {
   await page.goto(url, { waitUntil: 'domcontentloaded' });
   await page.waitForSelector(EMAIL, { state: 'visible', timeout: 30000 });
   await page.fill(EMAIL, login.tokens.email);           // a token; the proxy types the real address
@@ -58,7 +58,7 @@ async function emailCodeFlow(page, login, url, log) {
       log('owner_finished_captcha', { outcome: h.outcome, seconds: Math.round(h.durationMs / 1000) });
       if (!['solved', 'completed'].includes(h.outcome)) return h;
     }
-    await sleep(5000);
+    await sleep(pollMs);
   }
   // The owner may have typed the code during the same handoff; if a code box is still showing, hand it over.
   if (await page.locator(CODE).count().catch(() => 0)) {
