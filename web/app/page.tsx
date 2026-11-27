@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
 import Image from "next/image";
 import hero from "@/public/img/hero.jpg";
 import AskBhav from "./components/AskBhav";
@@ -20,6 +20,7 @@ import {
   SELF_DOCS_URL,
   addrUrl,
   txUrl,
+  VAULT,
 } from "@/lib/bhav";
 
 function Hero() {
@@ -155,6 +156,51 @@ function Live() {
   );
 }
 
+function Vault() {
+  const steps: [string, ReactNode, string][] = [
+    ["It proves a human is behind it.", <>The household agent signs every request with its Self Agent ID and asks Bhav for the cheapest price.</>, "Self Agent ID #212: same person as Bhav's own agent, one shared free quota."],
+    ["It signs in without your password.", <>It signs in to amazon.in through Agent Vault. It only ever holds placeholder tokens; Agent Vault types the real password.</>, "Amazon's one-time code goes to your phone, never to the agent."],
+    ["It pays from a capped wallet.", <>It pays for Buy services in USDC on Celo from your Agent Vault wallet, under an agent card you set.</>, `Limits: ${VAULT.limits.perPayment} per payment, ${VAULT.limits.weekly} a week, ${VAULT.limits.monthly} a month.`],
+    ["It gets stopped.", <>Asked to pay $0.04, Agent Vault refuses: over the per-payment cap. Nothing is paid and the card pauses until you resume it.</>, "A hard limit the agent cannot talk its way past."],
+  ];
+  const proof: [string, string][] = [
+    ["Agent Vault wallet", addrUrl(VAULT.wallet)],
+    ["first payment from Agent Vault", txUrl(VAULT.firstBuyPaymentTx)],
+    ["the cap refusal (screenshot)", VAULT.capRefusalProof],
+  ];
+  return (
+    <Section
+      id="vault"
+      i="its"
+      rest="hands."
+      lead="Bhav finds the price. The household agent acts on it through Agent Vault, with your password and your money out of its reach."
+      className="border-t border-line"
+    >
+      <ol className="grid grid-cols-1 gap-7 md:grid-cols-2">
+        {steps.map(([t, plain, why], n) => (
+          <li key={t} className="flex gap-5">
+            <span aria-hidden className="serif-i w-8 shrink-0 text-5xl leading-none text-lime">{n + 1}</span>
+            <div className="min-w-0">
+              <p className="text-xl font-semibold">{t}</p>
+              <p className="mt-1">{plain}</p>
+              <p className="mt-1 text-sm text-muted">{why}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <ul className="mt-8 flex flex-wrap gap-2 text-sm">
+        {proof.map(([l, h]) => (
+          <li key={l}>
+            <a href={h} {...ext} className="inline-block rounded-full border border-line px-3 py-1.5 text-fg/85 hover:border-lime hover:text-lime">
+              {l} ↗
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  );
+}
+
 function Code({ code, label }: { code: string; label: string }) {
   return (
     <div className="mt-3 flex items-start gap-2 rounded-xl bg-ink p-3 pl-4">
@@ -193,7 +239,7 @@ function UseIt() {
         <li className="card p-6">
           <p className="serif-i text-4xl leading-none text-lime">2</p>
           <p className="mt-4 text-lg font-semibold">Get the buyer agent</p>
-          <p className="mt-1 text-sm text-muted">Node 20+. The repo has a ready household buyer agent.</p>
+          <p className="mt-1 text-sm text-muted">Node 22+. The repo has a ready household buyer agent.</p>
           <Code code={clone} label="Copy the clone command" />
         </li>
         <li className="card p-6">
@@ -262,6 +308,7 @@ export default function Home() {
         <Hero />
         <TheGate />
         <Live />
+        <Vault />
         <UseIt />
       </main>
       <Footer />
