@@ -45,6 +45,7 @@ export const VAULT = {
   wallet: "0x2e55fee82b78ad14467603efd389dfe9dd3c571e",
   firstBuyPaymentTx: "0x0bd4abc98ef89a65f0f6dee4e2d075d887a393204ea64b3ec5b45a805167cef4",
   capRefusalProof: `${REPO_URL}/blob/main/docs/proof/agent-vault-cap-refusal.png`,
+  instacartSigninLog: `${REPO_URL}/blob/main/docs/proof/instacart-signin-2026-11-28.log`,
   limits: { perPayment: "$0.02", weekly: "$0.10", monthly: "$0.20" },
 } as const;
 

@@ -159,7 +159,7 @@ function Live() {
 function Vault() {
   const steps: [string, ReactNode, string][] = [
     ["It proves a human is behind it.", <>The household agent signs every request with its Self Agent ID and asks Bhav for the cheapest price.</>, "Self Agent ID #212: same person as Bhav's own agent, one shared free quota."],
-    ["It signs in without your password.", <>It signs in to amazon.in through Agent Vault. It only ever holds placeholder tokens; Agent Vault types the real password.</>, "Amazon's one-time code goes to your phone, never to the agent."],
+    ["It signs in without your password.", <>It signs in to Instacart through Agent Vault, with a login the vault opened for it. Its password was minted in the vault and nobody has seen it.</>, "A captcha or email code goes to your phone, never to the agent."],
     ["It pays from a capped wallet.", <>It pays for Buy services in USDC on Celo from your Agent Vault wallet, under an agent card you set.</>, `Limits: ${VAULT.limits.perPayment} per payment, ${VAULT.limits.weekly} a week, ${VAULT.limits.monthly} a month.`],
     ["It gets stopped.", <>Asked to pay $0.04, Agent Vault refuses: over the per-payment cap. Nothing is paid and the card pauses until you resume it.</>, "A hard limit the agent cannot talk its way past."],
   ];
@@ -167,6 +167,7 @@ function Vault() {
     ["Agent Vault wallet", addrUrl(VAULT.wallet)],
     ["first payment from Agent Vault", txUrl(VAULT.firstBuyPaymentTx)],
     ["the cap refusal (screenshot)", VAULT.capRefusalProof],
+    ["Instacart sign-in (log)", VAULT.instacartSigninLog],
   ];
   return (
     <Section
