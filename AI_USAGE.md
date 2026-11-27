@@ -31,3 +31,6 @@ This file will grow as the build goes on: where the agent was wrong, and how eac
 - **amazon.in through Agent Vault.** The proxy reaches the sign-in form and types the email and password, then Amazon serves its
   automated-access block page (no form, two links, two images). Agent Vault's own registry marks amazon.in "partial". The agent does
   not try to get past bot walls, so the household agent signs in to a site Agent Vault has verified instead.
+- **instacart.com through Agent Vault, first try.** Instacart showed a reCAPTCHA; the owner's live view on his phone dropped and he
+  released the page unsolved. Second try (same night): he solved it on the live page and the agent finished the sign-in itself.
+  The agent never sees the captcha, the code or the password; a human check is always the owner's.

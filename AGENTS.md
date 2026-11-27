@@ -73,4 +73,4 @@ npm run test:live       # read-only: live API health, the refusal, and each sett
 - Self Agent ID proves a **unique human** behind an agent, not that the human is trustworthy. Aadhaar proofs are weaker than passport proofs (Self's own note).
 - Payments between our own two agents are a demo of the mechanism, not traction; real use is counted only from wallets outside the team.
 - The API runs on one home server (devbox) because the price lookups need a real browser in India. If it is down, the website says so.
-- Agent Vault: the agent card's spending cap is proven on mainnet; a settled wallet payment and the amazon.in sign-in are still to come.
+- Agent Vault: the cap refusal, a settled wallet payment and an instacart.com sign-in are proven (README). Signing in again from a new browser can show Instacart's captcha, which only the owner may solve.
