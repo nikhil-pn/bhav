@@ -42,7 +42,13 @@ Everything is yours: your key, your phone, your wallet. Nobody else can spend yo
    ```
    This time Bhav answers `402 Payment Required`, your agent pays $0.01 USDC on Celo by itself (never more than $0.02), and you get the
    answer plus a transaction link. Copy that link.
-7. **Tell us in one line** what you would use it for (e.g. "checking chicken prices before ordering for the weekend"), and send
+7. **Optional: give it to your AI assistant.** Add Bhav as MCP tools to Claude Code (or any MCP agent):
+   ```bash
+   claude mcp add bhav -- node "$PWD/src/mcp.mjs"
+   ```
+   Then just ask your assistant "where is chicken curry cut cheapest in Kochi right now?". It calls `get_price` with your agent, and pays
+   the cent itself when needed.
+8. **Tell us in one line** what you would use it for (e.g. "checking chicken prices before ordering for the weekend"), and send
    us your agent address and the transaction link. We add you to the README as a user, with your permission.
 
 ## If something goes wrong
