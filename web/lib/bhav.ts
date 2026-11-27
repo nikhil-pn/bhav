@@ -37,16 +37,26 @@ export const SELF = {
 export const BUYER = {
   address: "0x964F176C16f484C4D035b3958a20F5F648897334" as const,
   selfAgentId: 212,
+  /** The household agent's own ERC-8004 identity on Celo mainnet (tagged). */
+  erc8004AgentId: 10164,
+  erc8004Tx: "0xea427047073fd4e17fd0a6dc36eb78de4dc989a723188415c4acca5609d01bc7",
 };
 export const FIRST_X402_TX = "0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090";
 
 /** Agent Vault (Self Labs): the household agent's wallet and card, on Celo mainnet. */
 export const VAULT = {
   wallet: "0x2e55fee82b78ad14467603efd389dfe9dd3c571e",
-  firstBuyPaymentTx: "0x0bd4abc98ef89a65f0f6dee4e2d075d887a393204ea64b3ec5b45a805167cef4",
-  capRefusalProof: `${REPO_URL}/blob/main/docs/proof/agent-vault-cap-refusal.png`,
+  /** First paid Google Places lookup ($0.04) from the Agent Vault wallet. */
+  firstBuyPaymentTx: "0xc2f9f9c9bcdd1986c130174e5220df4ac5ea8dec57f27288e4c7bd98624698bf",
+  /** The two paid lookups, in order. The third was refused: over the weekly limit. */
+  placesTxs: [
+    "0xc2f9f9c9bcdd1986c130174e5220df4ac5ea8dec57f27288e4c7bd98624698bf",
+    "0x8fcb23fb4490a2046fe876f31be7270b0870b7140bac28e03d13fbaa9ccd1a54",
+  ],
+  lookupPrice: "$0.04",
+  capRefusalProof: `${REPO_URL}/blob/main/docs/proof/agent-vault-weekly-budget-refusal.png`,
   instacartSigninLog: `${REPO_URL}/blob/main/docs/proof/instacart-signin-2026-11-28.log`,
-  limits: { perPayment: "$0.02", weekly: "$0.10", monthly: "$0.20" },
+  limits: { perPayment: "$0.05", weekly: "$0.10" },
 } as const;
 
 export const HACKATHON = {

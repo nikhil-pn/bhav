@@ -69,6 +69,8 @@ export type Stats = {
     humans: number;
     agents: number;
     usdcEarned: number;
+    humansByCountry?: Record<string, number>;
+    adultHumans?: number;
   };
   settlements: { ts: string; tx: string; payer: string; q: string }[];
   recent: StatsEvent[];
