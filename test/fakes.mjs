@@ -30,6 +30,10 @@ export async function startFakeRegistry() {
       case 'getAgentCountForHuman': return [BigInt([...agents.values()].filter((a) => BigInt(a.human) === BigInt(args[0])).length)];
       case 'getProofProvider': return [byId(args[0])?.provider ?? SELF_PROVIDER];
       case 'selfProofProvider': return [SELF_PROVIDER];
+      case 'getAgentCredentials': {
+        const c = byId(args[0])?.cred ?? {};
+        return [['', c.name ?? [], c.idNumber ?? '', c.nationality ?? '', c.dateOfBirth ?? '', '', '', BigInt(c.olderThan ?? 0), [false, false, false]]];
+      }
       default: throw new Error(`fake registry: ${name} not faked`);
     }
   };

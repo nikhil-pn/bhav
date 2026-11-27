@@ -28,7 +28,7 @@ async function startBhav(opts = {}) {
   const dataDir = opts.dataDir ?? mkdtempSync(join(tmpdir(), 'bhav-test-'));
   dirs.push(dataDir);
   const facilitator = opts.facilitator ?? fakeFacilitator();
-  const verifier = SelfAgentVerifier.create().network('mainnet').rpc(registry.url).sybilLimit(10).build();
+  const verifier = SelfAgentVerifier.create().network('mainnet').rpc(registry.url).sybilLimit(10).includeCredentials().build();
   const lookups = [];
   const app = createApp({
     net: 'mainnet', payTo: PAY_TO, verifier, facilitator, dataDir,
@@ -226,6 +226,22 @@ test('a failed price lookup returns 502 and does not use up a free answer', asyn
   assert.equal((await buyer.fetch(quoteUrl(bhav))).status, 502);
   fail = false;
   assert.deepEqual((await (await buyer.fetch(quoteUrl(bhav))).json()).billing, { kind: 'free', freeLeftToday: 0 });
+});
+
+// ── Self disclosures ──────────────────────────────────────────────────────
+
+test('the answer says whether the human is an adult and their country, and nothing else from the ID', async () => {
+  const bhav = await startBhav();
+  const adult = buyerFor(newAgent({ human: 8101, cred: { olderThan: 18, nationality: 'IND', name: ['ASHA', 'MENON'], idNumber: 'XXXX1234', dateOfBirth: '01-01-90' } }));
+  const body = await (await adult.fetch(quoteUrl(bhav))).json();
+  assert.deepEqual(body.agent.human, { adult: true, country: 'IND' });
+  const minor = buyerFor(newAgent({ human: 8102, cred: { olderThan: 0, nationality: 'BRA' } }));
+  assert.deepEqual((await (await minor.fetch(quoteUrl(bhav))).json()).agent.human, { adult: false, country: 'BRA' });
+  const log = readFileSync(join(bhav.dataDir, 'events.jsonl'), 'utf8');
+  for (const secret of ['ASHA', 'MENON', 'XXXX1234', '01-01-90']) assert.ok(!log.includes(secret), `${secret} must never be logged`);
+  const s = await (await fetch(`${bhav.base}/v1/stats`)).json();
+  assert.deepEqual(s.totals.humansByCountry, { IND: 1, BRA: 1 });
+  assert.equal(s.totals.adultHumans, 1);
 });
 
 // ── Website lane and stats ──────────────────────────────────────────────────
