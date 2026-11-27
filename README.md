@@ -8,9 +8,9 @@ Celo hackathon *Agents Open for Business* ([loops.house](https://www.loops.house
 
 Bhav sells live grocery prices to AI agents, and only to agents that have a real human behind them.
 
-1. **It knows the price.** Live prices from Zepto, Blinkit and Instamart (Kochi), compared with our own price archive (July–November 2026; items it never tracked say "no history yet"), sold per request over [x402](https://x402.celo.org) on Celo mainnet. ✅ live
-2. **One fair quota per human.** Every caller must sign its request with a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each **human** (not each agent) gets 3 free answers a day, then pays $0.01 USDC per answer. An agent with no human behind it is refused. Every answer also says what the human chose to disclose through Self, only whether they are an adult and their ID's country (e.g. `{"adult":true,"country":"IND"}`); `/v1/stats` counts humans by country. ✅ live
-3. **It acts for the household through [Agent Vault](https://agentvault.io).** When the apps are dear or out of stock, the household agent finds open supermarkets nearby (Google Places on [Buy](https://usebuy.ai), $0.04 a lookup), paid from the owner's Agent Vault wallet on Celo under a weekly grocery-research budget the owner set on its Agent Vault card ($0.10 a week, $0.05 a payment): two lookups fit, the third is refused and the card pauses until the owner resumes it. It also signs in to a store (instacart.com) with a login whose password nobody has seen. ✅ [paid lookup](https://celoscan.io/tx/0x8fcb23fb4490a2046fe876f31be7270b0870b7140bac28e03d13fbaa9ccd1a54) · ✅ [refused over the weekly budget](docs/proof/agent-vault-weekly-budget-refusal.png) · ✅ [Instacart sign-in](docs/proof/instacart-signin-2026-11-28.log)
+1. **It knows the price.** Live prices from Zepto, Blinkit and Instamart (Kochi), compared with our own price archive (July–November 2026; items it never tracked say "no history yet"), sold per request over [x402](https://x402.celo.org) on Celo mainnet. (live)
+2. **One fair quota per human.** Every caller must sign its request with a [Self Agent ID](https://docs.self.xyz/docs/agent-id/overview/), a zero-knowledge proof that a real, unique human stands behind the agent. Each **human** (not each agent) gets 3 free answers a day, then pays $0.01 USDC per answer. An agent with no human behind it is refused. Every answer also says what the human chose to disclose through Self, only whether they are an adult and their ID's country (e.g. `{"adult":true,"country":"IND"}`); `/v1/stats` counts humans by country. (live)
+3. **It acts for the household through [Agent Vault](https://agentvault.io).** When the apps are dear or out of stock, the household agent finds open supermarkets nearby (Google Places on [Buy](https://usebuy.ai), $0.04 a lookup), paid from the owner's Agent Vault wallet on Celo under a weekly grocery-research budget the owner set on its Agent Vault card ($0.10 a week, $0.05 a payment): two lookups fit, the third is refused and the card pauses until the owner resumes it. It also signs in to a store (instacart.com) with a login whose password nobody has seen. [paid lookup](https://celoscan.io/tx/0x8fcb23fb4490a2046fe876f31be7270b0870b7140bac28e03d13fbaa9ccd1a54) · [refused over the weekly budget](docs/proof/agent-vault-weekly-budget-refusal.png) · [Instacart sign-in](docs/proof/instacart-signin-2026-11-28.log)
 
 ## Try it
 | Who | How |
@@ -49,8 +49,8 @@ a page released unsolved stops the flow. CI runs it all on every push.
 ## Tracks
 | Track | Sponsor | What we show |
 |---|---|---|
-| Self Agent ID: Verified Agent Payments | Self | Agent ID decides who is served, how much is free, and who pays, with payments over x402 ✅ |
-| Agent Vault: Online & Onchain Checkouts | Self | open-store lookups paid from the Agent Vault wallet on Celo ✅; refused at the weekly budget, card paused ✅; signed in to instacart.com without seeing secrets ✅ |
+| Self Agent ID: Verified Agent Payments | Self | Agent ID decides who is served, how much is free, and who pays, with payments over x402 |
+| Agent Vault: Online & Onchain Checkouts | Self | open-store lookups paid from the Agent Vault wallet on Celo; refused at the weekly budget, card paused; signed in to instacart.com without seeing secrets |
 
 Agent wallet: `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F` · attribution tag: `celo_bc5d483f879e`.
 
