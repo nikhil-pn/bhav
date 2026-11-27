@@ -64,6 +64,7 @@ npm run test:live       # read-only: live API health, the refusal, and each sett
 |---|---|
 | ERC-8004 agent #10088, owned by `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F`, tagged | `cast call 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 "ownerOf(uint256)(address)" 10088 --rpc-url https://forno.celo.org` · tx `0xd041f1b7…bab4` |
 | Bhav is Self Agent ID #211, human-backed | `cast call 0xaC3DF9ABf80d0F5c020C06B04Cced27763355944 "isVerifiedAgent(bytes32)(bool)" 0x00000000000000000000000033a80697ac038279ca8d70f4c2cef82672683b9f --rpc-url https://forno.celo.org` → true |
+| Household agent is ERC-8004 #10164 | `cast call 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 "ownerOf(uint256)(address)" 10164 --rpc-url https://forno.celo.org` → `0x964F…7334` · tx `0xea427047…01bc7` |
 | Household buyer agent is Self Agent ID #212 | same call with `0x…964f176c16f484c4d035b3958a20f5f648897334` → true |
 | x402 payment settled on mainnet | tx `0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090` (USDC 0.01, payer #212 → Bhav) |
 

@@ -54,7 +54,7 @@ a page released unsolved stops the flow. CI runs it all on every push.
 
 Agent wallet: `0x33A80697Ac038279ca8d70F4c2Cef82672683b9F` · attribution tag: `celo_bc5d483f879e`.
 
-Bhav is registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004) (agent #10088); the household agent's card is ready (`household-agent.json`) and it is registered once it holds gas. Every transaction Bhav itself sends carries our [attribution tag](https://github.com/celo-org/attribution-tags).
+Both agents are registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-ai/8004): Bhav is agent #10088 and the household agent is agent #10164 ([tx](https://celoscan.io/tx/0xea427047073fd4e17fd0a6dc36eb78de4dc989a723188415c4acca5609d01bc7), card `household-agent.json`). Every transaction Bhav itself sends carries our [attribution tag](https://github.com/celo-org/attribution-tags).
 
 ## Proof (Celo mainnet unless noted)
 | What | Link |
@@ -62,6 +62,7 @@ Bhav is registered on [ERC-8004](https://docs.celo.org/build-on-celo/build-with-
 | ERC-8004 identity: agent **#10088**, registered with our attribution tag | [celoscan tx](https://celoscan.io/tx/0xd041f1b77e5a7d1791dc0c3e4e6158cb3a4c44f2c4471d5e2c5d4c3c34d1bab4) |
 | **Self Agent ID #211**: a real, unique human (Aadhaar, age 18+, zero-knowledge) stands behind this agent; proof fresh until Nov 2027 | [celoscan tx](https://celoscan.io/tx/0x37226569553840e5e0afbbf2f62af16a2e6530c2b0eb79174beafde4ec51b71b) |
 | Household buyer agent `0x964F…7334` = **Self Agent ID #212** (same human, second agent) | mainnet registry `isVerifiedAgent` = true |
+| Household agent on ERC-8004: **agent #10164**, registered with our attribution tag | [celoscan tx](https://celoscan.io/tx/0xea427047073fd4e17fd0a6dc36eb78de4dc989a723188415c4acca5609d01bc7) |
 | **Mainnet**: Bhav live at `https://devbox.tail84790b.ts.net/v1/quote?q=…`; buyer #212 got 3 free answers, then paid **$0.01 USDC over x402** for the 4th | [celoscan settlement](https://celoscan.io/tx/0x6113bb79235a96b96b362d88002cb4eec62a2d1a59f68db9cb9d2ce7b37b7090) |
 | Demo buyer funded with 1 USDC from the Bhav wallet (tagged) | [celoscan](https://celoscan.io/tx/0xc1406282959a48e30cb9b903a604ebde5533b636a9a35c1af3734b327e76b249) |
 | Testnet run of the full loop: agent with no Self ID → 403; human-backed agent → 1 free answer, then **$0.01 USDC paid over x402** | [Sepolia settlement](https://celo-sepolia.blockscout.com/tx/0x1ab8b241e1e26650d47c5e7443d227fdad9d7136b04a2dd38aef940b1bc630ad) |
