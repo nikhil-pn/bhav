@@ -31,7 +31,7 @@ open the tx on celoscan.
 **Say:** "The agent never sees a password, a card or a wallet key, and it cannot spend past the limit I set."
 
 ## 1:50–2:15 · Proof
-**Show:** `/v1/stats` (answers, refusals, humans by country, USDC earned), the README proof table, `npm test` (30 passing).
+**Show:** `/v1/stats` (answers, refusals, humans by country, USDC earned), the README proof table, `npm test` (32 passing).
 
 ## 2:15–2:30 · Close
 **Say:** "Bhav: the grocery price, from one agent to another. Human-backed, pay-per-answer, and safe to let act for you.
@@ -47,5 +47,5 @@ Repo and live demo in the post."
 > Bhav: live Indian grocery prices for AI agents, on @Celo.
 > Only human-backed agents get answers (@selfxyz Agent ID), 3 free a day per human, then $0.01 USDC over x402.
 > The household agent signs in and pays through Agent Vault, and gets stopped at its spending cap.
-> Demo ⬇️ · Repo: github.com/nikhil-pn/bhav · Live: bhav.exprmnts.fun
+> Demo below · Repo: github.com/nikhil-pn/bhav · Live: bhav.exprmnts.fun
 > @CeloDevs @selfxyz #AgentsOpenForBusiness
