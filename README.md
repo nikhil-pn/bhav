@@ -51,7 +51,7 @@ Built during Celo's *Agents Open for Business* hackathon (from 21 Nov 2026). See
 | The third lookup refused by Agent Vault, over the weekly budget | [screenshot](docs/proof/agent-vault-weekly-budget-refusal.png) |
 | Agent Vault sign-in to a store (instacart.com) | [log](docs/proof/instacart-signin-2026-11-28.log) · [owner's live view](docs/proof/instacart-signed-in-via-agent-vault-live-page.png) |
 
-As of 28 November 2026, `/v1/stats` shows 7 agent answers (6 free, 1 paid), 5 refused bots, and 1 human so far (the builder; [outside users are joining](docs/JOIN.md)). The page reads the live numbers.
+As of 28 November 2026, `/v1/stats` shows 8 agent answers (6 free, 2 paid), 5 refused bots, and 1 human so far (the builder; [outside users are joining](docs/JOIN.md)). The page reads the live numbers.
 
 ## How it works
 
